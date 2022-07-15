@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/home"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@color/transperent"
+        android:src="@drawable/icon_home" />
+
+    <ImageButton
+        android:id="@+id/cart"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@color/transperent"
+        android:src="@drawable/icon_cart" />
+
+    <ImageButton
+        android:id="@+id/favourite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@color/transperent"
+        android:src="@drawable/icon_favorite" />
+
+    <ImageButton
+        android:id="@+id/profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@color/transperent"
+        android:src="@drawable/icon_person" />
+
+
+</LinearLayout>

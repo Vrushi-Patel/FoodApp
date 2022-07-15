@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FoodApp</string>
+    <string name="food_menu">Food Menu</string>
+    <string name="food_menu_sub_text">Choose your best food have a great day</string>
+    <string name="more">More</string>
+    <string name="new_txt">NEW</string>
+    <string name="search_txt">Search Food...</string>
+    <string name="order_now">Order Now</string>
+    <string name="add_to_cart_msg">Add to cart?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="cart_items">Cart Items</string>
+    <string name="cart_total">Cart Total :</string>
+    <string name="check_out">Check Out</string>
+</resources>

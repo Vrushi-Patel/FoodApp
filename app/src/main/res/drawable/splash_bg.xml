@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/gradient" />
+    <item
+        android:drawable="@drawable/curved_shape"
+        android:right="300dp"
+        android:top="150dp" />
+    <item
+        android:bottom="150dp"
+        android:drawable="@drawable/curved_shape_mirrored" />
+</layer-list>
