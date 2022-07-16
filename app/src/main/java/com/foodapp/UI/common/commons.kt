@@ -14,9 +14,8 @@ import com.foodapp.UI.activities.CartActivity
 import com.foodapp.UI.activities.HomeActivity
 import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.UI.adapters.ProductAdapter
-import food_app_assignment.models.Food
-import food_app_assignment.models.Meal
-import food_app_assignment.models.Product
+import com.foodapp.models.Food
+import com.foodapp.models.Ingredient
 
 fun setBottomNavbar(activity: Activity) {
     val homeIcon = activity.findViewById<ImageButton>(R.id.home)
@@ -52,36 +51,16 @@ fun setProductPage(activity: HomeActivity, food: Food) {
     val productPage = activity.findViewById<View>(R.id.productPage)
     ingredientPage.visibility = View.GONE
     productPage.visibility = View.VISIBLE
-
-    when (food) {
-        is Product -> {
-            val product = food as Product
-            val ingredientsList = activity.findViewById<RecyclerView>(R.id.ingredientsList)
-            ingredientsList.apply {
-                layoutManager = LinearLayoutManager(activity)
-                (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
-                adapter =
-                    ProductAdapter(
-                        product.ingredients as MutableList<Food>
-                    )
-            }
-        }
-        is Meal -> {
-            val product = food as Meal
-            val ingredientsList = activity.findViewById<RecyclerView>(R.id.ingredientsList)
-            ingredientsList.apply {
-                layoutManager = LinearLayoutManager(activity)
-                (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
-                adapter =
-                    ProductAdapter(
-                        product.products as MutableList<Food>
-                    )
-            }
-        }
-
+    val product = food as Ingredient
+    val ingredientsList = activity.findViewById<RecyclerView>(R.id.ingredientsList)
+    ingredientsList.apply {
+        layoutManager = LinearLayoutManager(activity)
+        (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
+        adapter =
+            ProductAdapter(
+                product.ingredients as MutableList<Food>
+            )
     }
-
-
 }
 
 fun setTopNavbar(activity: Activity) {

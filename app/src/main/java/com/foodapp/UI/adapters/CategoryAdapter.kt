@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
 import com.foodapp.UI.activities.HomeActivity
 import com.squareup.picasso.Picasso
-import food_app_assignment.models.Food
+import com.foodapp.models.Food
 
 class CategoryAdapter(val items: MutableList<Food>) :
     RecyclerView.Adapter<CategoryAdapter.FoodViewHolder>() {

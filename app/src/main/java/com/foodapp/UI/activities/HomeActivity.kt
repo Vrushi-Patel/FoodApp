@@ -1,5 +1,7 @@
 package com.foodapp.UI.activities
 
+import OperationType
+import UserOperations
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
@@ -10,12 +12,9 @@ import com.foodapp.UI.common.setBottomNavbar
 import com.foodapp.UI.common.setIngredientPage
 import com.foodapp.UI.common.setProductPage
 import com.foodapp.UI.common.setTopNavbar
+import com.foodapp.models.Food
+import com.foodapp.models.Ingredient
 import com.squareup.picasso.Picasso
-import food_app_assignment.command.OperationType
-import food_app_assignment.command.UserOperations
-import food_app_assignment.models.Food
-import food_app_assignment.models.Ingredient
-import food_app_assignment.models.Product
 
 class HomeActivity : AppCompatActivity() {
 
@@ -42,7 +41,11 @@ class HomeActivity : AppCompatActivity() {
                     R.string.yes
                 ) { _, i ->
 
-                    UserOperations().performOperation(OperationType.AddToCart, food, null)
+                    UserOperations().performOperation(
+                        OperationType.AddToCart,
+                        food,
+                        null
+                    )
                     finish()
 
                 }
@@ -56,10 +59,7 @@ class HomeActivity : AppCompatActivity() {
 
         when (food) {
             is Ingredient -> {
-                setIngredientPage(this, food)
-            }
-            is Product -> {
-                if ((food as Product).ingredients.isEmpty()) {
+                if (food.ingredients.isEmpty()) {
                     setIngredientPage(this, food)
                 } else {
                     setProductPage(this, food)

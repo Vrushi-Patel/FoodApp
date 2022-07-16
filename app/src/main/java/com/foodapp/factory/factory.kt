@@ -1,37 +1,13 @@
-package food_app_assignment.factory
-
-import food_app_assignment.models.*
-
-fun products(function: Foods.() -> Unit): MutableList<Product> {
-    val products = mutableListOf<Product>()  // changed
-    val foods = Foods().apply(function) as MutableList<Product>
-    products.addAll(foods)
-    return products
-}
-
-fun ingredients(function: Foods.() -> Unit): MutableList<Ingredient> {
-    val ingredient = mutableListOf<Ingredient>()  // changed
-    val foods = Foods().apply(function) as MutableList<Ingredient>
-    ingredient.addAll(foods)
-    return ingredient
-}
+import com.foodapp.models.Food
+import com.foodapp.models.Ingredient
+import com.foodapp.room.entities.Food as entity
 
 interface FoodFactory {
     fun makeIngredient(
         function: Ingredient.() -> Unit
     ): Ingredient
 
-    fun makeMeal(
-        function: Meal.() -> Unit
-    ): Meal
-
-    fun makeProduct(
-        function: Product.() -> Unit
-    ): Product
-
-    fun makeCombo(
-        function: Meal.() -> Unit
-    ): Meal
+    fun convertEntity(food: entity): Food
 }
 
 class FoodFactoryImpl : FoodFactory {
@@ -39,23 +15,15 @@ class FoodFactoryImpl : FoodFactory {
         return Ingredient().apply(function)
     }
 
-    override infix fun makeMeal(function: Meal.() -> Unit): Meal {
-        val meal = Meal().apply(function)
-        meal.isCombo = false
-        return meal
+    override fun convertEntity(food: com.foodapp.room.entities.Food): Food {
+        return makeIngredient {
+            url = food.url
+            calories = food.calories
+            price = food.price
+            name = food.name
+            food.ingredients.forEach() {
+                ingredients.add(convertEntity(it))
+            }
+        }
     }
-
-    override infix fun makeProduct(
-        function: Product.() -> Unit
-    ): Product {
-        return Product().apply(function)
-    }
-
-    override infix fun makeCombo(function: Meal.() -> Unit): Meal {
-        val meal = Meal().apply(function)
-        meal.isCombo = true
-        return meal
-    }
-
-
 }

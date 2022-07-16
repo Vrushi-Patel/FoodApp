@@ -1,5 +1,6 @@
 package com.foodapp.UI.adapters
 
+import UserOperations
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
 import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.models.Food
 import com.squareup.picasso.Picasso
-import food_app_assignment.command.UserOperations
-import food_app_assignment.models.Food
 
 class CartAdapter(val items: MutableList<Food>, userOperation: UserOperations) :
     RecyclerView.Adapter<CartAdapter.FoodViewHolder>() {
