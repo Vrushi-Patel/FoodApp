@@ -2,6 +2,7 @@ package com.foodapp.UI.activities
 
 import OperationType
 import UserOperations
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -28,12 +29,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setContentView(R.layout.activity_home)
-
         setTopNavbar(this)
         setBottomNavbar(this)
-//        val image = findViewById<ImageView>(R.id.image)
-//        val orderButton = findViewById<CardView>(R.id.orderButton)
+
         binding.orderButton.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setMessage(R.string.add_to_cart_msg).setCancelable(true)
@@ -48,8 +46,9 @@ class HomeActivity : AppCompatActivity() {
                         food,
                         null
                     )
-                    finish()
-
+                    val intent = Intent(this, CartActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                 }
             alertDialog.create()
             alertDialog.show()

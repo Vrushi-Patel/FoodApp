@@ -20,17 +20,11 @@ class ProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setContentView(R.layout.activity_product)
 
         setBottomNavbar(this)
         setTopNavbar(this)
 
-//        val builder = FoodBuilderImpl(FoodFactoryImpl())
-//        val categoryList = findViewById<RecyclerView>(R.id.categoryList)
-//        val moreList = findViewById<RecyclerView>(R.id.moreList)
-
         val productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
-
         productViewModel.categoryList.observe(this) {
             binding.categoryList.apply {
                 layoutManager = LinearLayoutManager(baseContext)
@@ -40,7 +34,6 @@ class ProductActivity : AppCompatActivity() {
             }
         }
 
-
         productViewModel.moreList.observe(this) { moreList ->
             binding.moreList.apply {
                 layoutManager = LinearLayoutManager(baseContext)
@@ -49,35 +42,5 @@ class ProductActivity : AppCompatActivity() {
                     MoreAdapter(moreList)
             }
         }
-
-
-//        categoryList.apply {
-//            layoutManager = LinearLayoutManager(baseContext)
-//            (layoutManager as LinearLayoutManager).orientation = RecyclerView.HORIZONTAL
-//            adapter =
-//                CategoryAdapter(
-//                    mutableListOf(
-//                        builder.makeVegBurger(),
-//                        builder.makeCoke(),
-//                        builder.makeNonVegBurger(),
-//                        builder.makeFries(),
-//                        builder.makeIceCream(),
-//                    )
-//                )
-//        }
-//        moreList.apply {
-//            layoutManager = LinearLayoutManager(baseContext)
-//            (layoutManager as LinearLayoutManager).orientation = RecyclerView.HORIZONTAL
-//            adapter =
-//                MoreAdapter(
-//                    mutableListOf(
-//                        builder.makeBurgerCombo(),
-//                        builder.makeNonVegBurgerMeal(),
-//                        builder.makeVegBurgerMeal(),
-//                    )
-//                )
-//        }
     }
-
-
 }

@@ -7,7 +7,7 @@ interface FoodFactory {
         function: Ingredient.() -> Unit
     ): Ingredient
 
-    fun convertEntity(food: entity): Food
+//    fun convertEntity(food: entity): Food
 }
 
 class FoodFactoryImpl : FoodFactory {
@@ -15,15 +15,15 @@ class FoodFactoryImpl : FoodFactory {
         return Ingredient().apply(function)
     }
 
-    override fun convertEntity(food: com.foodapp.room.entities.Food): Food {
-        return makeIngredient {
-            url = food.url
-            calories = food.calories
-            price = food.price
-            name = food.name
-            food.ingredients.forEach() {
-                ingredients.add(convertEntity(it))
-            }
-        }
-    }
+//    override fun convertEntity(food: com.foodapp.room.entities.Food): Food {
+//        return makeIngredient {
+//            url = food.url
+//            calories = food.calories
+//            price = food.price
+//            name = food.name
+//            food.ingredients.forEach() {
+////                ingredients.add(convertEntity(it))
+//            }
+//        }
+//    }
 }

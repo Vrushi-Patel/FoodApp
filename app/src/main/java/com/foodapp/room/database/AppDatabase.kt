@@ -8,32 +8,37 @@ import com.foodapp.room.dao.CartDao
 import com.foodapp.room.dao.FoodDao
 import com.foodapp.room.entities.Cart
 import com.foodapp.room.entities.Food
+import com.foodapp.room.entities.Ingredient
+import com.foodapp.room.references.FoodIngredientRef
 
-@Database(entities = [Food::class, Cart::class], version = 1)
+@Database(
+    entities = [Food::class, Cart::class, Ingredient::class, FoodIngredientRef::class],
+    version = 1
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
     abstract fun foodDao(): FoodDao
 
-//    companion object {
-//        // Singleton prevents multiple instances of database opening at the
-//        // same time.
-//        @Volatile
-//        private var INSTANCE: AppDatabase? = null
-//
-//        fun getDatabase(context: Context): AppDatabase {
-//            // if the INSTANCE is not null, then return it,
-//            // if it is, then create the database
-//            return INSTANCE ?: synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    AppDatabase::class.java,
-//                    "app_database"
-//                ).build()
-//                INSTANCE = instance
-//                // return instance
-//                instance
-//            }
-//        }
-//    }
+    companion object {
+        // Singleton prevents multiple instances of database opening at the
+        // same time.
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app_database"
+                ).build()
+                INSTANCE = instance
+                // return instance
+                instance
+            }
+        }
+    }
 }

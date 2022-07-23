@@ -23,13 +23,10 @@ class CartViewModel : ViewModel() {
     // Just Adding the Items to cart statically.
     // Afterword the items are going to be added dynamically
     init {
-
         userOperation.performOperation(OperationType.AddToCart, builder.makeBurgerCombo(), null)
         userOperation.performOperation(OperationType.AddToCart, builder.makeVegBurger(), null)
         userOperation.performOperation(OperationType.AddToCart, builder.makeIceCream(), null)
         cartItems.value?.addAll(userOperation.cartItems)
-
-
     }
 
 }
