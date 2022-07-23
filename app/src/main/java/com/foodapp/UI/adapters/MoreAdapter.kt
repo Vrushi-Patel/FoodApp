@@ -10,22 +10,29 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
 import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.room.entities.Ingredient
 import com.squareup.picasso.Picasso
-import com.foodapp.models.Food
 
-class MoreAdapter(val items: MutableList<Food>) :
+class MoreAdapter :
     RecyclerView.Adapter<MoreAdapter.FoodViewHolder>() {
+    var items: List<Ingredient> = listOf()
+    fun setData(data: List<Ingredient>) {
+        items = data
+        notifyDataSetChanged()
+    }
+
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
         val name: TextView = itemView.findViewById(R.id.name)
         val imageView: ImageView = itemView.findViewById(R.id.productImage)
         val card: CardView = itemView.findViewById(R.id.item)
-        fun bind(food: Food) {
-            Picasso.with(context).load(food.url).into(imageView)
-            name.text = food.name
+        fun bind(food: Ingredient) {
+            Picasso.with(context).load(food.product.url).into(imageView)
+            name.text = food.product.name
             card.setOnClickListener {
                 val homeActivity = HomeActivity()
-                HomeActivity.setData(food)
+                HomeActivity.ingredient = food
+                HomeActivity.food = null
                 val intent = Intent(context, homeActivity::class.java)
                 context.startActivity(intent)
             }

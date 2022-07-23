@@ -16,8 +16,11 @@ interface FoodDao {
     fun findByName(name: String): Food
 
     @Transaction
-    @Query("SELECT * FROM foodItem")
-    fun getAll(): List<FoodIngredientRelation>
+    @Query("SELECT * FROM foodItem WHERE parentId IS null")
+    fun getAllParents(): Flow<List<FoodIngredientRelation>>
+
+    @Query("SELECT * FROM ingredientTable WHERE ingredientId NOT IN (SELECT ingredientId FROM REFERENCETABLE) ")
+    fun getAllIngredients(): Flow<List<Ingredient>>
 
     @Insert
     fun insertFood(vararg food: Food)
@@ -36,4 +39,13 @@ interface FoodDao {
 
     @Query("SELECT ingredientId FROM ingredientTable ORDER BY ingredientId DESC LIMIT 1")
     fun lastEntryIngredientId(): Int
+
+    @Query("SELECT COUNT(ingredientId) FROM ingredientTable")
+    fun getIngredientsCount(): Int
+
+    @Query("SELECT COUNT(foodId) FROM foodItem WHERE parentId is null")
+    fun getProductCount(): Int
+
+    @Query("SELECT * FROM foodItem WHERE parentId is :parentId")
+    fun getAllSubProducts(parentId: Int): Flow<List<FoodIngredientRelation>>
 }

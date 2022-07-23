@@ -144,10 +144,8 @@ class FoodBuilderImpl(override val factory: FoodFactoryImpl) :
         return factory makeIngredient {
             url =
                 "https://www.erfolgreich-sparen.com/wp-content/uploads/2013/05/mcdonalds_artikel_logo.png"
-            price = 999.0
-            calories = 300.0
             name = "NonVeg Burger Meal"
-            ingredients = mutableListOf(makeVegBurger(), makeFries(), makeCoke())
+            ingredients = mutableListOf(makeNonVegBurger(), makeFries(), makeCoke())
             returnCalories()
             returnPrice()
         }
@@ -158,8 +156,8 @@ class FoodBuilderImpl(override val factory: FoodFactoryImpl) :
             url =
                 "https://www.pngarts.com/files/3/McDonalds-Burger-PNG-Photo.png"
             name = "NonVeg/Veg Burger Combo"
-            add(makeVegBurger())
-            add(makeNonVegBurger())
+            add(makeVegBurgerMeal())
+            add(makeNonVegBurgerMeal())
             returnCalories()
             returnPrice()
         }

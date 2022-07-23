@@ -13,9 +13,10 @@ import com.foodapp.R
 import com.foodapp.UI.activities.CartActivity
 import com.foodapp.UI.activities.HomeActivity
 import com.foodapp.UI.activities.ProductActivity
-import com.foodapp.UI.adapters.ProductAdapter
-import com.foodapp.models.Food
-import com.foodapp.models.Ingredient
+import com.foodapp.UI.adapters.ProductIngredientAdapter
+import com.foodapp.UI.adapters.ProductSubProductAdapter
+import com.foodapp.room.entities.Ingredient
+import com.foodapp.room.relations.FoodIngredientRelation
 
 fun setBottomNavbar(activity: Activity) {
     val homeIcon = activity.findViewById<ImageButton>(R.id.home)
@@ -46,20 +47,27 @@ fun setBottomNavbar(activity: Activity) {
 
 }
 
-fun setProductPage(activity: HomeActivity, food: Food) {
+fun setProductPage(
+    activity: HomeActivity,
+    food: FoodIngredientRelation,
+    subProducts: List<FoodIngredientRelation>
+) {
     val ingredientPage = activity.findViewById<View>(R.id.ingredientPage)
     val productPage = activity.findViewById<View>(R.id.productPage)
     ingredientPage.visibility = View.GONE
     productPage.visibility = View.VISIBLE
-    val product = food as Ingredient
     val ingredientsList = activity.findViewById<RecyclerView>(R.id.ingredientsList)
     ingredientsList.apply {
         layoutManager = LinearLayoutManager(activity)
         (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
+        adapter = ProductIngredientAdapter(food.ingredients!!)
+    }
+    val productsList = activity.findViewById<RecyclerView>(R.id.productsList)
+    productsList.apply {
+        layoutManager = LinearLayoutManager(activity)
+        (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
         adapter =
-            ProductAdapter(
-                product.ingredients as MutableList<Food>
-            )
+            ProductSubProductAdapter(subProducts)
     }
 }
 
@@ -71,7 +79,7 @@ fun setTopNavbar(activity: Activity) {
     menu.setOnClickListener { }
 }
 
-fun setIngredientPage(activity: HomeActivity, food: Food) {
+fun setIngredientPage(activity: HomeActivity, food: Ingredient) {
     val ingredientPage = activity.findViewById<View>(R.id.ingredientPage)
     val productPage = activity.findViewById<View>(R.id.productPage)
     ingredientPage.visibility = View.VISIBLE
@@ -81,7 +89,7 @@ fun setIngredientPage(activity: HomeActivity, food: Food) {
     val name = activity.findViewById<TextView>(R.id.name)
     val data = activity.findViewById<TextView>(R.id.data)
 
-    price.text = "₹ " + food.price.toString()
-    name.text = food.name
+    price.text = "₹ " + food.product.price.toString()
+    name.text = food.product.name
     data.text = food.toString()
 }

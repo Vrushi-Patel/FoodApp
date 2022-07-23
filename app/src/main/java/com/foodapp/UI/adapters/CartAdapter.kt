@@ -30,7 +30,7 @@ class CartAdapter(val items: MutableList<Food>, userOperation: UserOperations) :
             Picasso.with(context).load(food.url).into(imageView)
             card.setOnClickListener {
                 val homeActivity = HomeActivity()
-                HomeActivity.setData(food)
+//                HomeActivity.food = food
                 val intent = Intent(context, homeActivity::class.java)
                 context.startActivity(intent)
             }
