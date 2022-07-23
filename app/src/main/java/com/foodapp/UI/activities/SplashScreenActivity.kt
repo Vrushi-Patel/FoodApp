@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
-import com.foodapp.AppClass
 import com.foodapp.R
-import com.foodapp.repositories.FoodRepository
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +16,6 @@ class SplashScreenActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                FoodRepository().insertFoodData(
-                    application,
-                    (application as AppClass).builder.makeVegBurger()
-                )
-                FoodRepository().getFoodData(application)
                 activity.startActivity(
                     Intent(
                         baseContext, ProductActivity::
