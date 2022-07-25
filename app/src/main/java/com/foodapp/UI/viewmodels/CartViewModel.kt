@@ -1,32 +1,41 @@
 package com.foodapp.UI.viewmodels
 
-import FoodFactoryImpl
-import OperationType
-import UserOperations
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.foodapp.builder.FoodBuilderImpl
-import com.foodapp.models.Food
+import androidx.lifecycle.viewModelScope
+import com.foodapp.AppClass
+import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.room.relations.CartFoodRelation
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
-    val builder = FoodBuilderImpl(FoodFactoryImpl())
-    val userOperation = UserOperations()
 
+    var cartItems: Flow<List<CartFoodRelation>> = app.repositoryCart.getCartList(app.db)
 
-    private val _cartItems: MutableLiveData<MutableList<Food>> = MutableLiveData(mutableListOf())
-
-    val cartItems: LiveData<MutableList<Food>>
-        get() = _cartItems
-
-
-    // Just Adding the Items to cart statically.
-    // Afterword the items are going to be added dynamically
-    init {
-        userOperation.performOperation(OperationType.AddToCart, builder.makeBurgerCombo(), null)
-        userOperation.performOperation(OperationType.AddToCart, builder.makeVegBurger(), null)
-        userOperation.performOperation(OperationType.AddToCart, builder.makeIceCream(), null)
-        cartItems.value?.addAll(userOperation.cartItems)
+    companion object {
+        lateinit var app: AppClass
     }
 
+    fun addToCart(food: CartFoodRelation) {
+        app.repositoryCart.addToCart(app.db, food.food)
+    }
+
+    fun removeFromCart(food: CartFoodRelation) {
+        app.repositoryCart.removeFromCart(app.db, food.food.foodId!!)
+    }
+
+    fun openItemPage(food: CartFoodRelation, context: Context) {
+        this.viewModelScope.launch {
+            app.repositoryFood.getProductFromFoodId(app.db, foodId = food.food.foodId!!)
+                .collect {
+                    val homeActivity = HomeActivity()
+                    HomeActivity.food = it
+                    HomeActivity.ingredient = null
+                    val intent = Intent(context, homeActivity::class.java)
+                    context.startActivity(intent)
+                }
+        }
+    }
 }

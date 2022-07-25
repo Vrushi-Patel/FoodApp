@@ -7,8 +7,12 @@ import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel : ViewModel() {
 
+    fun addToCart(food: FoodIngredientRelation?) {
+        app.repositoryCart.addToCart(app.db, food!!.food)
+    }
+
     var subProducts: Flow<List<FoodIngredientRelation>> = app.repositoryFood.getAllSubProducts(
-        app,
+        app.db,
         food.food.foodId!!
     )
 

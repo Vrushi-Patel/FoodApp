@@ -12,14 +12,15 @@ interface FoodDao {
     @Query("SELECT * FROM foodItem WHERE foodId IN (:ids)")
     fun loadAllByIds(ids: IntArray): Flow<List<Food>>
 
-    @Query("SELECT * FROM foodItem WHERE name LIKE :name LIMIT 1")
-    fun findByName(name: String): Food
-
     @Transaction
     @Query("SELECT * FROM foodItem WHERE parentId IS null")
     fun getAllParents(): Flow<List<FoodIngredientRelation>>
 
-    @Query("SELECT * FROM ingredientTable WHERE ingredientId NOT IN (SELECT ingredientId FROM REFERENCETABLE) ")
+    @Transaction
+    @Query("SELECT * FROM foodItem WHERE foodId IS :foodId")
+    fun getFoodFromFoodId(foodId: Int): Flow<FoodIngredientRelation>
+
+    @Query("SELECT * FROM ingredientTable WHERE ingredientId NOT IN (SELECT ingredientId FROM referenceTable) ")
     fun getAllIngredients(): Flow<List<Ingredient>>
 
     @Insert
@@ -32,7 +33,16 @@ interface FoodDao {
     fun insertReference(vararg relation: FoodIngredientRef)
 
     @Delete
-    fun delete(ingredient: Food)
+    fun deleteFood(food: Food)
+
+    @Delete
+    fun deleteIngredient(ingredient: Ingredient)
+
+    @Delete
+    fun deleteFoodRef(foodIngredientRef: FoodIngredientRef)
+
+    @Update
+    fun update(food: Food)
 
     @Query("SELECT foodId FROM foodItem ORDER BY foodId DESC LIMIT 1")
     fun lastEntryFoodId(): Int

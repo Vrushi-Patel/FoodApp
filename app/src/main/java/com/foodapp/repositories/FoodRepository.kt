@@ -1,10 +1,7 @@
 package com.foodapp.repositories
 
-import android.app.Application
 import com.foodapp.AppClass
-import com.foodapp.room.dao.CartDao
 import com.foodapp.room.database.AppDatabase
-import com.foodapp.room.entities.Cart
 import com.foodapp.room.entities.Food
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.entities.Product
@@ -19,28 +16,52 @@ import com.foodapp.models.Food as CompositeFood
 
 class FoodRepository {
 
-    fun getCartList(cartDao: CartDao): Flow<List<Cart>> {
-        return cartDao.getAll()
-    }
-
-    fun getAllProducts(app: Application): Flow<List<FoodIngredientRelation>> {
-        val db = (app as AppClass).db
+    fun getAllProducts(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
         return db.foodDao().getAllParents()
     }
 
-    fun getAllSubProducts(app: Application, parentId: Int): Flow<List<FoodIngredientRelation>> {
-        val db = (app as AppClass).db
+    fun getProductFromFoodId(db: AppDatabase, foodId: Int): Flow<FoodIngredientRelation> {
+        return db.foodDao().getFoodFromFoodId(foodId)
+    }
+
+    fun deleteFood(db: AppDatabase, food: FoodIngredientRelation) {
+        db.foodDao().deleteFood(food.food)
+        food.ingredients?.let {
+            food.ingredients.forEach {
+                deleteFoodIngredientRef(
+                    db,
+                    FoodIngredientRef(
+                        foodId = food.food.foodId!!,
+                        ingredientId = it.ingredientId!!
+                    )
+                )
+                deleteIngredient(db, it)
+            }
+        }
+    }
+
+    fun updateFood(db: AppDatabase, food: Food) {
+        db.foodDao().update(food)
+    }
+
+    fun deleteIngredient(db: AppDatabase, ingredient: Ingredient) {
+        db.foodDao().deleteIngredient(ingredient)
+    }
+
+    fun deleteFoodIngredientRef(db: AppDatabase, foodIngredientRef: FoodIngredientRef) {
+        db.foodDao().deleteFoodRef(foodIngredientRef)
+    }
+
+    fun getAllSubProducts(db: AppDatabase, parentId: Int): Flow<List<FoodIngredientRelation>> {
         return db.foodDao().getAllSubProducts(parentId)
     }
 
-    fun getAllIngredients(app: Application): Flow<List<Ingredient>> {
-        val db = (app as AppClass).db
+    fun getAllIngredients(db: AppDatabase): Flow<List<Ingredient>> {
         return db.foodDao().getAllIngredients()
     }
 
-    fun insertFoodData(app: Application, food: CompositeFood) {
+    fun insertFoodData(db: AppDatabase, food: CompositeFood) {
         CoroutineScope(Dispatchers.Default).launch {
-            val db = (app as AppClass).db
             delay(500)
             insertFood(food, db, null)
         }
@@ -102,31 +123,31 @@ class FoodRepository {
         CoroutineScope(Dispatchers.Default).launch {
             if (app.db.foodDao().getIngredientsCount() == 0) {
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeAluPatty())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeAluPatty())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeCoke())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeCoke())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeCheeseSlice())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeCheeseSlice())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeChickenPatty())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeChickenPatty())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeLettuce())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeLettuce())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeIceCream())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeIceCream())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeFries())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeFries())
             }
             if (app.db.foodDao().getProductCount() == 0) {
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeVegBurgerMeal())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeVegBurgerMeal())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeVegBurger())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeVegBurger())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeNonVegBurger())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeNonVegBurger())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeNonVegBurgerMeal())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeNonVegBurgerMeal())
                 delay(100)
-                app.repositoryFood.insertFoodData(app, app.builder.makeBurgerCombo())
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeBurgerCombo())
             }
         }
     }

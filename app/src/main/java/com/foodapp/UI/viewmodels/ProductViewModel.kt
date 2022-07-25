@@ -7,8 +7,8 @@ import com.foodapp.room.relations.FoodIngredientRelation
 import kotlinx.coroutines.flow.Flow
 
 class ProductViewModel : ViewModel() {
-    var ingredientList: Flow<List<Ingredient>> = app.repositoryFood.getAllIngredients(app)
-    var productList: Flow<List<FoodIngredientRelation>> = app.repositoryFood.getAllProducts(app)
+    var ingredientList: Flow<List<Ingredient>> = app.repositoryFood.getAllIngredients(app.db)
+    var productList: Flow<List<FoodIngredientRelation>> = app.repositoryFood.getAllProducts(app.db)
 
     companion object {
         lateinit var app: AppClass

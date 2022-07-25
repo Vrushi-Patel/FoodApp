@@ -11,12 +11,3 @@ data class Food(
     @ColumnInfo var parentId: Int?,
     @Embedded var product: Product,
 )
-
-@Entity
-data class Product(
-    @ColumnInfo var calories: Double,
-    @ColumnInfo var price: Double,
-    @ColumnInfo var name: String,
-    @ColumnInfo var url: String,
-)
-
