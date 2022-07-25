@@ -2,7 +2,6 @@ package com.foodapp.UI.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -37,10 +36,10 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         setTopNavbar(this)
         setBottomNavbar(this)
-
-        binding.orderButton.setOnClickListener {
+        HomeViewModel.app = application as AppClass
+        binding.productPage.orderButton.setOnClickListener {
             showAlertDialog({
-                // Add To Cart here
+                homeViewModel.addToCart(food)
                 val intent = Intent(this, CartActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
