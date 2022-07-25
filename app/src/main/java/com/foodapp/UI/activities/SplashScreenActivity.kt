@@ -25,7 +25,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
                 activity.startActivity(
                     Intent(
-                        baseContext, ProductActivity::
+                        baseContext, HomeActivity::
                         class.java
                     )
                 )

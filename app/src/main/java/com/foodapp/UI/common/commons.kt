@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
 import com.foodapp.UI.activities.CartActivity
-import com.foodapp.UI.activities.HomeActivity
 import com.foodapp.UI.activities.ProductActivity
+import com.foodapp.UI.activities.HomeActivity
 import com.foodapp.UI.adapters.ProductIngredientAdapter
 import com.foodapp.UI.adapters.ProductSubProductAdapter
 import com.foodapp.room.entities.Ingredient
@@ -29,7 +29,7 @@ fun setBottomNavbar(activity: Activity) {
             cartIcon.setColorFilter(ContextCompat.getColor(activity, R.color.colorOrange))
             homeIcon.setOnClickListener {
 
-                activity.startActivity(Intent(activity, ProductActivity::class.java))
+                activity.startActivity(Intent(activity, HomeActivity::class.java))
                 activity.finish()
             }
 
@@ -48,7 +48,7 @@ fun setBottomNavbar(activity: Activity) {
 }
 
 fun setProductPage(
-    activity: HomeActivity,
+    activity: ProductActivity,
     food: FoodIngredientRelation,
     subProducts: List<FoodIngredientRelation>
 ) {
@@ -79,7 +79,7 @@ fun setTopNavbar(activity: Activity) {
     menu.setOnClickListener { }
 }
 
-fun setIngredientPage(activity: HomeActivity, food: Ingredient) {
+fun setIngredientPage(activity: ProductActivity, food: Ingredient) {
     val ingredientPage = activity.findViewById<View>(R.id.ingredientPage)
     val productPage = activity.findViewById<View>(R.id.productPage)
     ingredientPage.visibility = View.VISIBLE

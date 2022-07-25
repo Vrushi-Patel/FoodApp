@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
 import com.squareup.picasso.Picasso
@@ -29,10 +29,10 @@ class ProductIngredientAdapter(val items: List<Ingredient>) :
             data.text = food.toString()
             Picasso.with(context).load(food.product.url).into(imageView)
             card.setOnClickListener {
-                val homeActivity = HomeActivity()
-                HomeActivity.ingredient = food
-                HomeActivity.food = null
-                val intent = Intent(context, homeActivity::class.java)
+                val productActivity = ProductActivity()
+                ProductActivity.ingredient = food
+                ProductActivity.food = null
+                val intent = Intent(context, productActivity::class.java)
                 context.startActivity(intent)
             }
         }
@@ -69,10 +69,10 @@ class ProductSubProductAdapter(val items: List<FoodIngredientRelation>) :
             data.text = food.toString()
             Picasso.with(context).load(food.food.product.url).into(imageView)
             card.setOnClickListener {
-                val homeActivity = HomeActivity()
-                HomeActivity.ingredient = null
-                HomeActivity.food = food
-                val intent = Intent(context, homeActivity::class.java)
+                val productActivity = ProductActivity()
+                ProductActivity.ingredient = null
+                ProductActivity.food = food
+                val intent = Intent(context, productActivity::class.java)
                 context.startActivity(intent)
             }
         }

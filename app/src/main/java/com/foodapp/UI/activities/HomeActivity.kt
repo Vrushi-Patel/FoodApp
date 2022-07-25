@@ -1,88 +1,58 @@
 package com.foodapp.UI.activities
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.AppClass
-import com.foodapp.R
+import com.foodapp.UI.adapters.CategoryAdapter
+import com.foodapp.UI.adapters.MoreAdapter
 import com.foodapp.UI.common.setBottomNavbar
-import com.foodapp.UI.common.setIngredientPage
-import com.foodapp.UI.common.setProductPage
 import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.viewmodels.HomeViewModel
+import com.foodapp.UI.viewmodels.ProductViewModel
 import com.foodapp.databinding.ActivityHomeBinding
-import com.foodapp.room.entities.Ingredient
-import com.foodapp.room.relations.FoodIngredientRelation
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-
-    val homeViewModel: HomeViewModel by viewModels()
-
-    companion object {
-        var ingredient: Ingredient? = null
-        var food: FoodIngredientRelation? = null
-    }
+    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setTopNavbar(this)
+
         setBottomNavbar(this)
-        HomeViewModel.app = application as AppClass
-        binding.productPage.orderButton.setOnClickListener {
-            showAlertDialog({
-                homeViewModel.addToCart(food)
-                val intent = Intent(this, CartActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-            }, { finish() })
+        setTopNavbar(this)
+
+        ProductViewModel.app = application as AppClass
+        binding.categoryList.apply {
+            layoutManager = LinearLayoutManager(baseContext)
+            (layoutManager as LinearLayoutManager).orientation = RecyclerView.HORIZONTAL
+            adapter = CategoryAdapter()
         }
 
-        food?.let {
-            Picasso.with(baseContext)
-                .load(it.food.product.url)
-                .placeholder(R.drawable.burger)
-                .into(binding.collapsableMenu.image)
-            val activity = this
-            HomeViewModel.app = application as AppClass
-            HomeViewModel.food = food!!
-            homeViewModel.viewModelScope.launch {
-                homeViewModel.subProducts.collect { list ->
-                    setProductPage(activity, it, list)
-                }
+        binding.moreList.apply {
+            layoutManager = LinearLayoutManager(baseContext)
+            (layoutManager as LinearLayoutManager).orientation = RecyclerView.HORIZONTAL
+            adapter = MoreAdapter()
+        }
+
+        productViewModel.viewModelScope.launch {
+            productViewModel.productList.collect {
+                (binding.categoryList.adapter as CategoryAdapter).setData(it)
             }
         }
 
-        ingredient?.let {
-            Picasso.with(baseContext)
-                .load(it.product.url)
-                .placeholder(R.drawable.burger)
-                .into(binding.collapsableMenu.image)
-            setIngredientPage(this, it)
+        productViewModel.viewModelScope.launch {
+            productViewModel.ingredientList.collect {
+                (binding.moreList.adapter as MoreAdapter).setData(it)
+            }
         }
 
-    }
 
-    private fun showAlertDialog(yesFunction: () -> Unit, noFuction: () -> Unit) {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setMessage(R.string.add_to_cart_msg).setCancelable(true)
-            .setNegativeButton(
-                R.string.no
-            ) { _, i -> noFuction() }
-            .setPositiveButton(
-                R.string.yes
-            ) { _, i ->
-                yesFunction()
-            }
-        alertDialog.create()
-        alertDialog.show()
     }
 }

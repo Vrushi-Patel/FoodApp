@@ -20,10 +20,10 @@
             android:name=".UI.activities.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.activities.ProductActivity"
+            android:name=".UI.activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.activities.HomeActivity"
+            android:name=".UI.activities.ProductActivity"
             android:exported="false" />
         <activity
             android:name=".UI.activities.SplashScreenActivity"

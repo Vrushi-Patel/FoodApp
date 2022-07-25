@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.room.relations.FoodIngredientRelation
 import com.squareup.picasso.Picasso
 
@@ -27,10 +27,10 @@ class CategoryAdapter :
         fun bind(food: FoodIngredientRelation) {
             Picasso.with(context).load(food.food.product.url).into(imageView)
             card.setOnClickListener {
-                val homeActivity = HomeActivity()
-                HomeActivity.food = food
-                HomeActivity.ingredient = null
-                val intent = Intent(context, homeActivity::class.java)
+                val productActivity = ProductActivity()
+                ProductActivity.food = food
+                ProductActivity.ingredient = null
+                val intent = Intent(context, productActivity::class.java)
                 context.startActivity(intent)
             }
         }

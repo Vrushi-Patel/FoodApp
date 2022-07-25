@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foodapp.AppClass
-import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.room.relations.CartFoodRelation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -30,10 +30,10 @@ class CartViewModel : ViewModel() {
         this.viewModelScope.launch {
             app.repositoryFood.getProductFromFoodId(app.db, foodId = food.food.foodId!!)
                 .collect {
-                    val homeActivity = HomeActivity()
-                    HomeActivity.food = it
-                    HomeActivity.ingredient = null
-                    val intent = Intent(context, homeActivity::class.java)
+                    val productActivity = ProductActivity()
+                    ProductActivity.food = it
+                    ProductActivity.ingredient = null
+                    val intent = Intent(context, productActivity::class.java)
                     context.startActivity(intent)
                 }
         }

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.room.entities.Ingredient
 import com.squareup.picasso.Picasso
 
@@ -30,10 +30,10 @@ class MoreAdapter :
             Picasso.with(context).load(food.product.url).into(imageView)
             name.text = food.product.name
             card.setOnClickListener {
-                val homeActivity = HomeActivity()
-                HomeActivity.ingredient = food
-                HomeActivity.food = null
-                val intent = Intent(context, homeActivity::class.java)
+                val productActivity = ProductActivity()
+                ProductActivity.ingredient = food
+                ProductActivity.food = null
+                val intent = Intent(context, productActivity::class.java)
                 context.startActivity(intent)
             }
         }
