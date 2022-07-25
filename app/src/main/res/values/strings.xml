@@ -12,4 +12,5 @@
     <string name="cart_items">Cart Items</string>
     <string name="cart_total">Cart Total :</string>
     <string name="check_out">Check Out</string>
+    <string name="create_favourite">Create Favourite</string>
 </resources>

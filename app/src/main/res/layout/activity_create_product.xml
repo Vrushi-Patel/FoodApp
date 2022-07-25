@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.activities.HomeActivity">
+    tools:context=".UI.activities.CreateProductActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -21,7 +21,6 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="@id/bottombar"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
@@ -39,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/food_menu"
+                    android:text="@string/create_favourite"
                     android:textColor="@color/colorOrange"
                     android:textSize="34sp"
                     android:textStyle="bold"
@@ -64,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
-                android:text="@string/food_menu_sub_text"
+                android:text="Choose ingredients for favourite combo"
                 android:textColor="@color/gray"
                 android:textSize="20sp"
                 android:textStyle="normal" />
@@ -97,13 +96,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/bottombar"
-        layout="@layout/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

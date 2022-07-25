@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
 import com.foodapp.UI.activities.CartActivity
-import com.foodapp.UI.activities.ProductActivity
+import com.foodapp.UI.activities.CreateProductActivity
 import com.foodapp.UI.activities.HomeActivity
+import com.foodapp.UI.activities.ProductActivity
 import com.foodapp.UI.adapters.ProductIngredientAdapter
 import com.foodapp.UI.adapters.ProductSubProductAdapter
 import com.foodapp.room.entities.Ingredient
@@ -23,7 +24,16 @@ fun setBottomNavbar(activity: Activity) {
     val cartIcon = activity.findViewById<ImageButton>(R.id.cart)
     val favouriteIcon = activity.findViewById<ImageButton>(R.id.favourite)
     val profileIcon = activity.findViewById<ImageButton>(R.id.profile)
+    val addProductIcon = activity.findViewById<ImageButton>(R.id.createProduct)
 
+    addProductIcon.setOnClickListener {
+        activity.startActivity(
+            Intent(
+                activity,
+                CreateProductActivity::class.java
+            )
+        )
+    }
     when (activity) {
         is CartActivity -> {
             cartIcon.setColorFilter(ContextCompat.getColor(activity, R.color.colorOrange))
