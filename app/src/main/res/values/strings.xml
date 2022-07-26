@@ -13,4 +13,7 @@
     <string name="cart_total">Cart Total :</string>
     <string name="check_out">Check Out</string>
     <string name="create_favourite">Create Favourite</string>
+    <string name="create_combo">Create combo</string>
+    <string name="create_burger">Create burger</string>
+    <string name="add_to_favourite">Add to Favourite</string>
 </resources>

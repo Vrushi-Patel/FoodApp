@@ -29,6 +29,7 @@ class Ingredient : Food {
     }
 
     override fun returnPrice(): Double {
+        price = 0.0
         getIterator().forEach {
             price += (it?.price ?: 0.0)
         }
@@ -36,6 +37,7 @@ class Ingredient : Food {
     }
 
     override fun returnCalories(): Double {
+        calories = 0.0
         getIterator().forEach {
             calories += (it?.calories ?: 0.0)
         }
@@ -81,4 +83,13 @@ class Ingredient : Food {
     override fun toString(): String {
         return "{ calories = $calories, price = $price, name = $name, url = $url }"
     }
+}
+
+class Foods : ArrayList<Food>() {
+
+    fun ingredient(block: Ingredient.() -> Unit) {
+        val product = Ingredient().apply(block)
+        add(product)  // changed
+    }
+
 }

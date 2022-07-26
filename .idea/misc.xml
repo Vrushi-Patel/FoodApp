@@ -12,7 +12,7 @@
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/drawable/rounded_button_shape.xml" value="0.1035" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/drawable/splash_bg.xml" value="0.1035" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_cart.xml" value="0.125" />
-        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_create_product.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_create_product.xml" value="0.22" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_home.xml" value="0.10666666666666667" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_product.xml" value="0.10555555555555556" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.14130434782608695" />
@@ -20,11 +20,15 @@
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/cart_item.xml" value="0.5" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/category_item.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/colapsable_menu.xml" value="0.14130434782608695" />
+        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/custom_product_details.xml" value="0.1310344827586207" />
+        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/fragment_add_ingredient.xml" value="0.125" />
+        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/fragment_add_product.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/ingredient_page.xml" value="0.17908787541713014" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/more_item.xml" value="0.1" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/product_item.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/product_page.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/searchbar.xml" value="0.1347517730496454" />
+        <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/select_item.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/vrupatel1/StudioProjects/FoodApp/app/src/main/res/layout/topbar.xml" value="0.14130434782608695" />
       </map>
     </option>

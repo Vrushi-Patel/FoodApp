@@ -1,5 +1,6 @@
 package com.foodapp.repositories
 
+import android.util.Log
 import com.foodapp.AppClass
 import com.foodapp.room.database.AppDatabase
 import com.foodapp.room.entities.Food
@@ -61,6 +62,7 @@ class FoodRepository {
     }
 
     fun insertFoodData(db: AppDatabase, food: CompositeFood) {
+        Log.e("asd", food.toString())
         CoroutineScope(Dispatchers.Default).launch {
             delay(500)
             insertFood(food, db, null)
@@ -125,19 +127,19 @@ class FoodRepository {
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeAluPatty())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeCoke())
-                delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeCheeseSlice())
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeChickenPatty())
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeLettuce())
+            }
+            if (app.db.foodDao().getProductCount() == 0) {
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeIceCream())
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeFries())
-            }
-            if (app.db.foodDao().getProductCount() == 0) {
+                delay(100)
+                app.repositoryFood.insertFoodData(app.db, app.builder.makeCoke())
                 delay(100)
                 app.repositoryFood.insertFoodData(app.db, app.builder.makeVegBurgerMeal())
                 delay(100)

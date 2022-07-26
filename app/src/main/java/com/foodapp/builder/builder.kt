@@ -3,6 +3,7 @@ package com.foodapp.builder
 import FoodFactory
 import FoodFactoryImpl
 import com.foodapp.models.Ingredient
+import ingredientsList
 
 interface IngredientComboMealBuilder {
     val factory: FoodFactory
@@ -67,9 +68,18 @@ class FoodBuilderImpl(override val factory: FoodFactoryImpl) :
         return factory makeIngredient {
             url =
                 "https://www.freeiconspng.com/uploads/bottle-coca-cola-png-transparent-2.png"
-            calories = 140.0
-            price = 40.0
             name = "Coke"
+            ingredients = ingredientsList {
+                ingredient {
+                    url =
+                        "https://www.freeiconspng.com/uploads/bottle-coca-cola-png-transparent-2.png"
+                    calories = 140.0
+                    price = 40.0
+                    name = "Coke"
+                }
+            }
+            returnCalories()
+            returnPrice()
         }
     }
 
@@ -77,9 +87,18 @@ class FoodBuilderImpl(override val factory: FoodFactoryImpl) :
         return factory makeIngredient {
             url =
                 "https://th.bing.com/th/id/R.cf5d3ff8380a3a6124f7aa74cc767b58?rik=ViXSzVW%2bYuFytw&riu=http%3a%2f%2fpngimg.com%2fuploads%2ffries%2ffries_PNG77.png&ehk=f%2fVVz9hXHJxj4J4mNBDFYY%2b7iL7iUZCs6mvynYFs5ss%3d&risl=&pid=ImgRaw&r=0"
-            calories = 400.0
-            price = 120.0
             name = "Fries"
+            ingredients = ingredientsList {
+                ingredient {
+                    url =
+                        "https://th.bing.com/th/id/R.cf5d3ff8380a3a6124f7aa74cc767b58?rik=ViXSzVW%2bYuFytw&riu=http%3a%2f%2fpngimg.com%2fuploads%2ffries%2ffries_PNG77.png&ehk=f%2fVVz9hXHJxj4J4mNBDFYY%2b7iL7iUZCs6mvynYFs5ss%3d&risl=&pid=ImgRaw&r=0"
+                    calories = 400.0
+                    price = 120.0
+                    name = "Fries"
+                }
+            }
+            returnCalories()
+            returnPrice()
         }
     }
 
@@ -119,9 +138,18 @@ class FoodBuilderImpl(override val factory: FoodFactoryImpl) :
         return factory makeIngredient {
             url =
                 "https://th.bing.com/th/id/R.455187b169890c0f4c11482b21e8e357?rik=KnDYPOpKB9LDdQ&riu=http%3a%2f%2fwww.pngpix.com%2fwp-content%2fuploads%2f2016%2f07%2fPNGPIX-COM-Ice-Cream-PNG-Transparent-Image.png&ehk=AUXFwYWSfytNHjVonU%2bVHhRUy5SA39quoAEZqnRiDTg%3d&risl=&pid=ImgRaw&r=0"
-            calories = 400.0
-            price = 120.0
             name = "IceCream"
+            ingredients = ingredientsList {
+                ingredient {
+                    url =
+                        "https://th.bing.com/th/id/R.455187b169890c0f4c11482b21e8e357?rik=KnDYPOpKB9LDdQ&riu=http%3a%2f%2fwww.pngpix.com%2fwp-content%2fuploads%2f2016%2f07%2fPNGPIX-COM-Ice-Cream-PNG-Transparent-Image.png&ehk=AUXFwYWSfytNHjVonU%2bVHhRUy5SA39quoAEZqnRiDTg%3d&risl=&pid=ImgRaw&r=0"
+                    calories = 400.0
+                    price = 120.0
+                    name = "IceCream"
+                }
+            }
+            returnCalories()
+            returnPrice()
         }
     }
 
