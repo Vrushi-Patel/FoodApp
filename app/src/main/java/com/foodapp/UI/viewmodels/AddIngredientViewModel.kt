@@ -5,11 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.foodapp.AppClass
 import com.foodapp.models.Food
+import com.foodapp.room.relations.FoodIngredientRelation
+import kotlinx.coroutines.flow.Flow
 
 class AddIngredientViewModel : ViewModel() {
 
-    var ingredientList = app.repositoryFood.getAllIngredients(app.db)
+    var ingredientList: Flow<List<com.foodapp.room.entities.Ingredient>>? = null
+
     var foodComposite: Food = app.builder.factory.makeIngredient { }
+    var selectedItems: MutableList<Int> = mutableListOf()
+
+    val selectedItemLiveData: MutableLiveData<MutableList<Int>> by lazy {
+        MutableLiveData<MutableList<Int>>()
+    }
 
     val foodLiveData: MutableLiveData<Food> by lazy {
         MutableLiveData<Food>()
@@ -21,6 +29,7 @@ class AddIngredientViewModel : ViewModel() {
 
     init {
         foodLiveData.value = foodComposite
+        selectedItemLiveData.value = selectedItems
     }
 
     fun addProduct(food: com.foodapp.room.entities.Ingredient) {
@@ -58,8 +67,43 @@ class AddIngredientViewModel : ViewModel() {
     fun makeProduct() {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
-        app.repositoryFood.insertFoodData(app.db, foodComposite)
-        foodComposite = AddProductViewModel.app.builder.factory.makeIngredient { }
+
+        app.repositoryFavouriteFood.createFavouriteFood(app, foodComposite)
+
+        foodComposite = app.builder.factory.makeIngredient { }
         foodLiveData.value = foodComposite
+    }
+
+    fun updateProduct(food: FoodIngredientRelation) {
+        foodComposite.url =
+            "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
+
+        app.repositoryFavouriteFood.updateFavouriteFood(app, foodComposite, food)
+
+        foodComposite = app.builder.factory.makeIngredient { }
+        foodLiveData.value = foodComposite
+    }
+
+    suspend fun setFoodData(food: FoodIngredientRelation) {
+        ingredientList = app.repositoryFood.getAllIngredientsWithBasic(
+            AddProductViewModel.app.db,
+            food.food.foodId!!
+        )
+        app.repositoryFood.getAllIngredients(AddProductViewModel.app.db, food.food.foodId!!)
+            .collect {
+                it?.let { i ->
+
+                    foodComposite = app.builder.factory.convertFood(food)
+                    foodComposite.returnPrice()
+                    foodComposite.returnCalories()
+                    foodLiveData.value = foodComposite
+
+                    i.forEach { d ->
+                        selectedItems.add(d.ingredientId!!)
+                    }
+
+                    selectedItemLiveData.value = selectedItems
+                }
+            }
     }
 }

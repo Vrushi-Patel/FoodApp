@@ -10,10 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.CartActivity
-import com.foodapp.UI.activities.CreateProductActivity
-import com.foodapp.UI.activities.HomeActivity
-import com.foodapp.UI.activities.ProductActivity
+import com.foodapp.UI.activities.*
 import com.foodapp.UI.adapters.ProductIngredientAdapter
 import com.foodapp.UI.adapters.ProductSubProductAdapter
 import com.foodapp.room.entities.Ingredient
@@ -34,27 +31,35 @@ fun setBottomNavbar(activity: Activity) {
             )
         )
     }
+    homeIcon.setOnClickListener {
+        if (activity !is HomeActivity) {
+            activity.startActivity(Intent(activity, HomeActivity::class.java))
+            activity.finish()
+        }
+    }
+    favouriteIcon.setOnClickListener {
+        if (activity !is FavouriteFoodActivity) {
+            activity.startActivity(Intent(activity, FavouriteFoodActivity::class.java))
+            activity.finish()
+        }
+    }
+    cartIcon.setOnClickListener {
+        if (activity !is CartActivity) {
+            activity.startActivity(Intent(activity, CartActivity::class.java))
+            activity.finish()
+        }
+    }
     when (activity) {
         is CartActivity -> {
             cartIcon.setColorFilter(ContextCompat.getColor(activity, R.color.colorOrange))
-            homeIcon.setOnClickListener {
-
-                activity.startActivity(Intent(activity, HomeActivity::class.java))
-                activity.finish()
-            }
-
+        }
+        is FavouriteFoodActivity -> {
+            favouriteIcon.setColorFilter(ContextCompat.getColor(activity, R.color.colorOrange))
         }
         else -> {
             homeIcon.setColorFilter(ContextCompat.getColor(activity, R.color.colorOrange))
-            cartIcon.setOnClickListener {
-
-                activity.startActivity(Intent(activity, CartActivity::class.java))
-                activity.finish()
-            }
         }
     }
-
-
 }
 
 fun setProductPage(
@@ -102,4 +107,16 @@ fun setIngredientPage(activity: ProductActivity, food: Ingredient) {
     price.text = "₹ " + food.product.price.toString()
     name.text = food.product.name
     data.text = food.toString()
+}
+
+fun getSelectedItemId(
+    food: FoodIngredientRelation
+): MutableList<Int> {
+    val dataList = mutableListOf<Int>()
+    food.ingredients?.let {
+        it.forEach { i ->
+            dataList.add(i.ingredientId!!)
+        }
+    }
+    return dataList
 }

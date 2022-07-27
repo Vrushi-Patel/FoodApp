@@ -16,4 +16,7 @@
     <string name="create_combo">Create combo</string>
     <string name="create_burger">Create burger</string>
     <string name="add_to_favourite">Add to Favourite</string>
+    <string name="favorite_products">Favorite Products</string>
+    <string name="update_favourite">Update Favourite</string>
+    <string name="update">Update</string>
 </resources>

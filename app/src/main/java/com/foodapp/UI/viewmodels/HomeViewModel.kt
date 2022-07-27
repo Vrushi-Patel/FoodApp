@@ -11,7 +11,7 @@ class HomeViewModel : ViewModel() {
         app.repositoryCart.addToCart(app.db, food!!.food)
     }
 
-    var subProducts: Flow<List<FoodIngredientRelation>> = app.repositoryFood.getAllSubProducts(
+    var subProducts: Flow<List<FoodIngredientRelation>?> = app.repositoryFood.getAllSubProducts(
         app.db,
         food.food.foodId!!
     )

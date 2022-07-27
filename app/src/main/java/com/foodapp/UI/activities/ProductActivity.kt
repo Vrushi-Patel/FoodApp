@@ -56,7 +56,9 @@ class ProductActivity : AppCompatActivity() {
             HomeViewModel.food = food!!
             homeViewModel.viewModelScope.launch {
                 homeViewModel.subProducts.collect { list ->
-                    setProductPage(activity, it, list)
+                    list?.let { list ->
+                        setProductPage(activity, it, list)
+                    }
                 }
             }
         }

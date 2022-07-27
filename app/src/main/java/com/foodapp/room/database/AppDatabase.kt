@@ -5,20 +5,23 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.foodapp.room.dao.CartDao
+import com.foodapp.room.dao.FavouriteFoodDao
 import com.foodapp.room.dao.FoodDao
 import com.foodapp.room.entities.Cart
+import com.foodapp.room.entities.Favourite
 import com.foodapp.room.entities.Food
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.references.FoodIngredientRef
 
 @Database(
-    entities = [Food::class, Cart::class, Ingredient::class, FoodIngredientRef::class],
+    entities = [Favourite::class, Food::class, Cart::class, Ingredient::class, FoodIngredientRef::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
     abstract fun foodDao(): FoodDao
+    abstract fun favouriteDao(): FavouriteFoodDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

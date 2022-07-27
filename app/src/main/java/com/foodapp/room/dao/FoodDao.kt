@@ -23,6 +23,12 @@ interface FoodDao {
     @Query("SELECT * FROM ingredientTable WHERE ingredientId NOT IN (SELECT ingredientId FROM referenceTable) ")
     fun getAllIngredients(): Flow<List<Ingredient>>
 
+    @Query("SELECT * FROM ingredientTable WHERE ingredientId IN (SELECT ingredientId FROM referenceTable WHERE foodId IS :foodId) ")
+    fun getAllIngredients(foodId: Int): Flow<List<Ingredient>?>
+
+    @Query("SELECT * FROM ingredientTable WHERE (ingredientId IN (SELECT ingredientId FROM referenceTable WHERE foodId IS :foodId)) OR (ingredientId NOT IN (SELECT ingredientId FROM referenceTable)) ORDER BY ingredientId DESC")
+    fun getAllIngredientsWithBasic(foodId: Int): Flow<List<Ingredient>>
+
     @Insert
     fun insertFood(vararg food: Food)
 
@@ -57,5 +63,9 @@ interface FoodDao {
     fun getProductCount(): Int
 
     @Query("SELECT * FROM foodItem WHERE parentId is :parentId")
-    fun getAllSubProducts(parentId: Int): Flow<List<FoodIngredientRelation>>
+    fun getAllSubProducts(parentId: Int): Flow<List<FoodIngredientRelation>?>
+
+    @Transaction
+    @Query("SELECT * FROM foodItem WHERE parentId IS :parentId OR (parentId IS null AND foodId IS NOT :parentId) ORDER BY foodId DESC")
+    fun getAllParents(parentId: Int): Flow<List<FoodIngredientRelation>>
 }

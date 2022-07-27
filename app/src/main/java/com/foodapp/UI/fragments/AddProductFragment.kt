@@ -15,6 +15,7 @@ import com.foodapp.AppClass
 import com.foodapp.UI.adapters.IngredientSelectorAdapter
 import com.foodapp.UI.viewmodels.AddProductViewModel
 import com.foodapp.databinding.FragmentAddProductBinding
+import com.foodapp.room.relations.FoodIngredientRelation
 import kotlinx.coroutines.launch
 
 class AddProductFragment : Fragment() {
@@ -23,22 +24,39 @@ class AddProductFragment : Fragment() {
         fun newInstance() = AddProductFragment()
     }
 
-    fun onClick() {
-        if (validateFields())
+    fun onCreate() {
+        if (validateFields()) {
+            viewModel.selectedItems = mutableListOf()
             viewModel.makeProduct()
+        }
+    }
+
+    fun onUpdate(food: FoodIngredientRelation) {
+        if (validateFields()) {
+            viewModel.selectedItems = mutableListOf()
+            viewModel.updateProduct(food)
+        }
+    }
+
+    var food: FoodIngredientRelation? = null
+
+    fun setFoodData(food: FoodIngredientRelation) {
+        this.food = food
     }
 
     private fun validateFields(): Boolean {
         val isValid = !(binding.productDetail.name.text!!.isEmpty()
                 || binding.productDetail.url.text!!.isEmpty()
                 || binding.productDetail.price.text!!.isEmpty()
-                || binding.productDetail.calories.text!!.isEmpty())
+                || binding.productDetail.calories.text!!.isEmpty()
+                || viewModel.foodComposite.price == 0.0 || viewModel.foodComposite.calories == 0.0)
         if (!isValid)
             Toast.makeText(context, "Please, fill all data!", Toast.LENGTH_LONG).show()
         return isValid
     }
 
     private lateinit var viewModel: AddProductViewModel
+
     private var _biding: FragmentAddProductBinding? = null
     private val binding get() = _biding!!
 
@@ -57,7 +75,16 @@ class AddProductFragment : Fragment() {
         AddProductViewModel.app = requireActivity().application as AppClass
         viewModel = ViewModelProvider(this).get(AddProductViewModel::class.java)
 
-        viewModel.foodLiveData.observeForever {
+        if (food != null && viewModel.productList == null) {
+            viewModel.viewModelScope.launch {
+                viewModel.setFoodData(food!!)
+            }
+        } else {
+            viewModel.productList =
+                AddProductViewModel.app.repositoryFood.getAllProducts(AddProductViewModel.app.db)
+        }
+
+        viewModel.foodLiveData.observe(this.viewLifecycleOwner) {
             binding.productDetail.calories.setText(it.calories.toString())
             binding.productDetail.price.setText(it.price.toString())
             binding.productDetail.name.setText(it.name)
@@ -79,14 +106,17 @@ class AddProductFragment : Fragment() {
         }
 
         viewModel.viewModelScope.launch {
-            viewModel.productList.collect {
-                val selectedItems: MutableList<Int> = mutableListOf()
-                (binding.comboList.adapter as IngredientSelectorAdapter).setData(
-                    it,
-                    selectedItems,
-                    viewModel
-                )
+            viewModel.productList?.let {
+                it.collect {
+                    (binding.comboList.adapter as IngredientSelectorAdapter).setData(
+                        it, viewModel
+                    )
+                }
             }
+        }
+
+        viewModel.selectedItemLiveData.observe(this.viewLifecycleOwner) {
+            (binding.comboList.adapter as IngredientSelectorAdapter).notifyDataSetChanged()
         }
     }
 }

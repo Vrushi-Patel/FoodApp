@@ -17,6 +17,12 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
         <activity
+            android:name=".UI.activities.UpdateFavouriteProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.activities.FavouriteFoodActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.activities.CreateProductActivity"
             android:exported="false" />
         <activity

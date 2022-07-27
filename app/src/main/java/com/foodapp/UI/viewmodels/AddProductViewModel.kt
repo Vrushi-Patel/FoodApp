@@ -9,13 +9,20 @@ import com.foodapp.models.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AddProductViewModel : ViewModel() {
-    var productList = app.repositoryFood.getAllProducts(app.db)
-    var foodComposite: Food = app.builder.factory.makeIngredient { }
 
+    var productList: Flow<List<FoodIngredientRelation>>? = null
+
+    var foodComposite: Food = app.builder.factory.makeIngredient { }
+    var selectedItems: MutableList<Int> = mutableListOf()
+
+    val selectedItemLiveData: MutableLiveData<MutableList<Int>> by lazy {
+        MutableLiveData<MutableList<Int>>()
+    }
     val foodLiveData: MutableLiveData<Food> by lazy {
         MutableLiveData<Food>()
     }
@@ -26,6 +33,7 @@ class AddProductViewModel : ViewModel() {
 
     init {
         foodLiveData.value = foodComposite
+        selectedItemLiveData.value = selectedItems
     }
 
     fun addProduct(food: FoodIngredientRelation) {
@@ -77,28 +85,59 @@ class AddProductViewModel : ViewModel() {
     private fun addAllSubProducts(foodData: Ingredient, food: FoodIngredientRelation) {
         CoroutineScope(Dispatchers.Default).launch {
 
-            val productsList: List<FoodIngredientRelation> =
+            val productsList: List<FoodIngredientRelation>? =
                 app.repositoryFood.getAllSubProducts(app.db, food.food.foodId!!)
-                    .collect() as List<FoodIngredientRelation>
+                    .collect() as List<FoodIngredientRelation>?
 
-            productsList.forEach {
+            productsList?.let {
+                productsList.forEach {
+                    val foodSubData = app.builder.factory.convertFood(it)
+                    addAllSubProducts(foodSubData, it)
+                    foodData.add(foodSubData)
 
-                val foodSubData = app.builder.factory.convertFood(it)
-                addAllSubProducts(foodSubData, it)
-                foodData.add(foodSubData)
-
-                foodData.returnCalories()
-                foodData.returnPrice()
+                    foodData.returnCalories()
+                    foodData.returnPrice()
+                }
             }
-
         }
     }
 
     fun makeProduct() {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
-        app.repositoryFood.insertFoodData(app.db, foodComposite)
+
+        app.repositoryFavouriteFood.createFavouriteFood(app, foodComposite)
+
         foodComposite = app.builder.factory.makeIngredient { }
         foodLiveData.value = foodComposite
+    }
+
+    fun updateProduct(food: FoodIngredientRelation) {
+        foodComposite.url =
+            "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
+
+        app.repositoryFavouriteFood.updateFavouriteFood(app, foodComposite, food)
+
+        foodComposite = app.builder.factory.makeIngredient { }
+        foodLiveData.value = foodComposite
+    }
+
+    suspend fun setFoodData(food: FoodIngredientRelation) {
+        productList = app.repositoryFood.getAllProducts(app.db, food.food.foodId!!)
+        app.repositoryFood.getAllSubProducts(app.db, food.food.foodId!!).collect {
+            it?.let { i ->
+
+                foodComposite = app.builder.factory.convertFood(food)
+                foodComposite.returnPrice()
+                foodComposite.returnCalories()
+
+                i.forEach { d ->
+                    addProduct(d)
+                    selectedItems.add(d.food.foodId!!)
+                }
+
+                selectedItemLiveData.value = selectedItems
+            }
+        }
     }
 }

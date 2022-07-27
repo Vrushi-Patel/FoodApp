@@ -19,13 +19,11 @@ class IngredientSelectorAdapter : RecyclerView.Adapter<IngredientSelectorAdapter
 
     var items: List<*> = listOf<ingredientsRoom>()
 
-    lateinit var selectedItems: MutableList<Int>
     lateinit var viewModel: Any
 
-    fun setData(data: List<*>, selectedItems: MutableList<Int>, viewModel: Any) {
+    fun setData(data: List<*>, viewModel: Any) {
 
         items = data
-        this.selectedItems = selectedItems
         this.viewModel = viewModel
 
         notifyDataSetChanged()
@@ -47,7 +45,6 @@ class IngredientSelectorAdapter : RecyclerView.Adapter<IngredientSelectorAdapter
         fun bind(
             food: Any?,
             viewModel: Any?,
-            selectedItems: MutableList<Int>,
             resetList: () -> Unit
         ) {
 
@@ -59,22 +56,20 @@ class IngredientSelectorAdapter : RecyclerView.Adapter<IngredientSelectorAdapter
                 data.text = "Calories : ${food.product.calories}"
                 price.text = "₹ ${food.product.price}"
 
-                checkBox.isChecked = selectedItems.contains(food.ingredientId!!)
+                (viewModel as AddIngredientViewModel)
+                checkBox.isChecked = viewModel.selectedItems.contains(food.ingredientId!!)
 
                 card.setOnClickListener {
 
-                    (viewModel as AddIngredientViewModel)
-
-                    if (selectedItems.contains(food.ingredientId!!)) {
+                    if (viewModel.selectedItems.contains(food.ingredientId!!)) {
                         viewModel.removeProduct(food)
-                        selectedItems.remove(food.ingredientId!!)
+                        viewModel.selectedItems.remove(food.ingredientId!!)
                     } else {
                         viewModel.addProduct(food)
-                        selectedItems.add(food.ingredientId!!)
+                        viewModel.selectedItems.add(food.ingredientId!!)
                     }
 
                     resetList()
-
                 }
 
             } else if (food is FoodIngredientRelation) {
@@ -85,21 +80,20 @@ class IngredientSelectorAdapter : RecyclerView.Adapter<IngredientSelectorAdapter
                 data.text = "Calories : ${food.food.product.calories}"
                 price.text = "₹ ${food.food.product.price}"
 
-                checkBox.isChecked = selectedItems.contains(food.food.foodId!!)
+                (viewModel as AddProductViewModel)
+                checkBox.isChecked = viewModel.selectedItems.contains(food.food.foodId!!)
 
                 card.setOnClickListener {
 
-                    (viewModel as AddProductViewModel)
-
-                    if (selectedItems.contains(food.food.foodId!!)) {
+                    if (viewModel.selectedItems.contains(food.food.foodId!!)) {
 
                         viewModel.removeProduct(food)
-                        selectedItems.remove(food.food.foodId!!)
+                        viewModel.selectedItems.remove(food.food.foodId!!)
 
                     } else {
 
                         viewModel.addProduct(food)
-                        selectedItems.add(food.food.foodId!!)
+                        viewModel.selectedItems.add(food.food.foodId!!)
 
                     }
 
@@ -120,7 +114,7 @@ class IngredientSelectorAdapter : RecyclerView.Adapter<IngredientSelectorAdapter
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        holder.bind(items[position], viewModel, selectedItems) { notifyDataSetChanged() }
+        holder.bind(items[position], viewModel) { notifyDataSetChanged() }
     }
 
     override fun getItemCount(): Int {

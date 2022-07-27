@@ -6,52 +6,49 @@ import com.foodapp.R
 import com.foodapp.UI.common.setTopNavbar
 import com.foodapp.UI.fragments.AddIngredientFragment
 import com.foodapp.UI.fragments.AddProductFragment
-import com.foodapp.databinding.ActivityCreateProductBinding
+import com.foodapp.databinding.ActivityUpdateFavouriteProductBinding
+import com.foodapp.room.relations.FoodIngredientRelation
 
-class CreateProductActivity : AppCompatActivity() {
+class UpdateFavouriteProductActivity : AppCompatActivity() {
 
-    private var _biding: ActivityCreateProductBinding? = null
+    private var _biding: ActivityUpdateFavouriteProductBinding? = null
     private val binding get() = _biding!!
+
+    companion object {
+        lateinit var food: FoodIngredientRelation
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _biding = ActivityCreateProductBinding.inflate(layoutInflater)
+        _biding = ActivityUpdateFavouriteProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setTopNavbar(this)
 
-        selectCombo()
-        binding.radioCreate.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.radioCombo -> {
-                    selectCombo()
-                }
-                R.id.radioBurger -> {
-                    selectBurger()
-                }
+        updateCombo()
+        food.ingredients?.let {
+            if (it.isNotEmpty()) {
+                updateBurger()
             }
         }
-
     }
 
-    private fun selectCombo() {
-        binding.radioCombo.isChecked = true
-        binding.radioBurger.isChecked = false
+    private fun updateCombo() {
         val fragment = AddProductFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameCreateProduct, fragment)
             .addToBackStack(null)
             .commit()
-        binding.addToFavBtn.setOnClickListener { fragment.onCreate() }
+        fragment.setFoodData(food)
+        binding.updateFavBtn.setOnClickListener { fragment.onUpdate(food) }
     }
 
-    private fun selectBurger() {
-        binding.radioCombo.isChecked = false
-        binding.radioBurger.isChecked = true
+    private fun updateBurger() {
         val fragment = AddIngredientFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameCreateProduct, fragment)
             .addToBackStack(null)
             .commit()
-        binding.addToFavBtn.setOnClickListener { fragment.onCreate() }
+        fragment.setFoodData(food)
+        binding.updateFavBtn.setOnClickListener { fragment.onUpdate(food) }
     }
 }
