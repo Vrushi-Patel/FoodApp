@@ -1,5 +1,6 @@
 package com.foodapp.UI.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.foodapp.AppClass
@@ -33,13 +34,17 @@ class AddIngredientViewModel : ViewModel() {
 
     fun removeProduct(food: com.foodapp.room.entities.Ingredient) {
 
-        val product =
-            foodComposite.ingredients.first {
+        var product: Food? = null
+        try {
+            product = foodComposite.ingredients.first {
                 (food.product.name == it.name
                         && food.product.url == it.url
                         && food.product.calories == it.calories
                         && food.product.price == it.price)
             }
+        } catch (e: Exception) {
+            Log.e("Error", e.toString())
+        }
 
         product.let {
             foodComposite.ingredients.remove(it)

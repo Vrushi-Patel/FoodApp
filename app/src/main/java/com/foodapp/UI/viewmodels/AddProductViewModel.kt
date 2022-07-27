@@ -1,5 +1,6 @@
 package com.foodapp.UI.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.foodapp.AppClass
@@ -51,15 +52,19 @@ class AddProductViewModel : ViewModel() {
             foodData.returnCalories()
             foodData.returnPrice()
 
-            val product =
-                foodComposite.ingredients.first {
+            var product: Food? = null
+            try {
+                product = foodComposite.ingredients.first {
                     (food.food.product.name == it.name
                             && food.food.product.url == it.url
                             && food.food.product.calories == it.calories
                             && food.food.product.price == it.price)
                 }
+            } catch (e: Exception) {
+                Log.e("Error", e.toString())
+            }
 
-            product.let {
+            product?.let {
                 foodComposite.remove(it)
                 foodComposite.returnCalories()
                 foodComposite.returnPrice()
