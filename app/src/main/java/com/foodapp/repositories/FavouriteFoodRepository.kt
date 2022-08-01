@@ -1,6 +1,5 @@
 package com.foodapp.repositories
 
-import com.foodapp.AppClass
 import com.foodapp.models.Food
 import com.foodapp.room.database.AppDatabase
 import com.foodapp.room.relations.FoodIngredientRelation
@@ -9,27 +8,56 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class FavouriteFoodRepository {
+interface FavouriteFoodRepository {
 
-    fun getFavouriteFood(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
+    fun getFavouriteFood(db: AppDatabase): Flow<List<FoodIngredientRelation>>
+
+    fun createFavouriteFood(repositoryFood: FoodRepository, db: AppDatabase, food: Food)
+
+    fun deleteFavouriteFood(
+        repositoryFood: FoodRepository,
+        db: AppDatabase,
+        favouriteFood: FoodIngredientRelation
+    )
+
+    fun updateFavouriteFood(
+        repositoryFood: FoodRepository,
+        db: AppDatabase,
+        foodComposite: Food,
+        food: FoodIngredientRelation
+    )
+}
+
+class FavouriteFoodRepositoryImpl : FavouriteFoodRepository {
+
+    override fun getFavouriteFood(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
         return db.favouriteDao().getAllFavourites()
     }
 
-    fun createFavouriteFood(app: AppClass, food: Food) {
-        app.repositoryFood.insertFoodData(app.db, food, isFavorite = true)
+    override fun createFavouriteFood(repositoryFood: FoodRepository, db: AppDatabase, food: Food) {
+        repositoryFood.insertFoodData(db, food, isFavorite = true)
     }
 
-    fun deleteFavouriteFood(app: AppClass, favouriteFood: FoodIngredientRelation) {
+    override fun deleteFavouriteFood(
+        repositoryFood: FoodRepository,
+        db: AppDatabase,
+        favouriteFood: FoodIngredientRelation
+    ) {
         CoroutineScope(Dispatchers.Default).launch {
-            app.repositoryFood.deleteFood(app.db, favouriteFood)
-            app.db.favouriteDao().deleteFood(favouriteFood.food.foodId!!)
+            repositoryFood.deleteFood(db, favouriteFood)
+            db.favouriteDao().deleteFood(favouriteFood.food.foodId!!)
         }
     }
 
-    fun updateFavouriteFood(app: AppClass, foodComposite: Food, food: FoodIngredientRelation) {
+    override fun updateFavouriteFood(
+        repositoryFood: FoodRepository,
+        db: AppDatabase,
+        foodComposite: Food,
+        food: FoodIngredientRelation
+    ) {
         CoroutineScope(Dispatchers.Default).launch {
-            app.repositoryFood.deleteFood(app.db, food)
-            createFavouriteFood(app, foodComposite)
+            repositoryFood.deleteFood(db, food)
+            createFavouriteFood(repositoryFood, db, foodComposite)
         }
     }
 }

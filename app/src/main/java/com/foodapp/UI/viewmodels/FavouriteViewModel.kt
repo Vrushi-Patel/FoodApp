@@ -10,7 +10,7 @@ import com.foodapp.room.relations.FoodIngredientRelation
 class FavouriteViewModel : ViewModel() {
 
     fun delete(food: FoodIngredientRelation) {
-        app.repositoryFavouriteFood.deleteFavouriteFood(app, food)
+        app.repositoryFavouriteFood.deleteFavouriteFood(app.repositoryFood, app.db, food)
     }
 
     fun update(food: FoodIngredientRelation, context: Context) {

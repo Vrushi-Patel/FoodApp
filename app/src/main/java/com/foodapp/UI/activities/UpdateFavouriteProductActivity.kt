@@ -8,7 +8,9 @@ import com.foodapp.UI.fragments.AddIngredientFragment
 import com.foodapp.UI.fragments.AddProductFragment
 import com.foodapp.databinding.ActivityUpdateFavouriteProductBinding
 import com.foodapp.room.relations.FoodIngredientRelation
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UpdateFavouriteProductActivity : AppCompatActivity() {
 
     private var _biding: ActivityUpdateFavouriteProductBinding? = null

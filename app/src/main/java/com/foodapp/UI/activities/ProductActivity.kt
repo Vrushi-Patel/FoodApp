@@ -17,8 +17,10 @@ import com.foodapp.databinding.ActivityProductBinding
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ProductActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductBinding

@@ -16,8 +16,10 @@ import com.foodapp.UI.adapters.IngredientSelectorAdapter
 import com.foodapp.UI.viewmodels.AddIngredientViewModel
 import com.foodapp.databinding.FragmentAddIngredientBinding
 import com.foodapp.room.relations.FoodIngredientRelation
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddIngredientFragment : Fragment() {
 
     companion object {
@@ -79,9 +81,7 @@ class AddIngredientFragment : Fragment() {
                 viewModel.setFoodData(food!!)
             }
         } else {
-            viewModel.ingredientList = AddIngredientViewModel.app.repositoryFood.getAllIngredients(
-                AddIngredientViewModel.app.db
-            )
+            viewModel.getProducts()
         }
 
         viewModel.foodLiveData.observe(this.viewLifecycleOwner) {

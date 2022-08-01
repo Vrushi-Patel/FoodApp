@@ -9,13 +9,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class CartRepository {
+interface CartRepository {
 
-    fun getCartList(db: AppDatabase): Flow<List<CartFoodRelation>> {
+    fun getCartList(db: AppDatabase): Flow<List<CartFoodRelation>>
+
+    fun addToCart(db: AppDatabase, food: Food)
+
+    fun removeFromCart(db: AppDatabase, foodId: Int)
+}
+
+class CartRepositoryImpl : CartRepository {
+
+    override fun getCartList(db: AppDatabase): Flow<List<CartFoodRelation>> {
         return db.cartDao().getAll()
     }
 
-    fun addToCart(db: AppDatabase, food: Food) {
+    override fun addToCart(db: AppDatabase, food: Food) {
         CoroutineScope(Dispatchers.Default).launch {
             when (db.cartDao().isInCart(foodId = food.foodId ?: 0)) {
                 0 -> {
@@ -31,7 +40,7 @@ class CartRepository {
         }
     }
 
-    fun removeFromCart(db: AppDatabase, foodId: Int) {
+    override fun removeFromCart(db: AppDatabase, foodId: Int) {
         CoroutineScope(Dispatchers.Default).launch {
             val data = getCartItemFromFoodId(db, foodId).cartData
             when (data.quantity) {

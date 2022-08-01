@@ -108,15 +108,3 @@ fun setIngredientPage(activity: ProductActivity, food: Ingredient) {
     name.text = food.product.name
     data.text = food.toString()
 }
-
-fun getSelectedItemId(
-    food: FoodIngredientRelation
-): MutableList<Int> {
-    val dataList = mutableListOf<Int>()
-    food.ingredients?.let {
-        it.forEach { i ->
-            dataList.add(i.ingredientId!!)
-        }
-    }
-    return dataList
-}

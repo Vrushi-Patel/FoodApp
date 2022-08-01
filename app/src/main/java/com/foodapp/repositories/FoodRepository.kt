@@ -1,6 +1,6 @@
 package com.foodapp.repositories
 
-import com.foodapp.AppClass
+import com.foodapp.builder.FoodBuilderImpl
 import com.foodapp.room.database.AppDatabase
 import com.foodapp.room.entities.Favourite
 import com.foodapp.room.entities.Food
@@ -15,21 +15,51 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.foodapp.models.Food as CompositeFood
 
-class FoodRepository {
+interface FoodRepository {
 
-    fun getAllProducts(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
+    fun getAllProducts(db: AppDatabase): Flow<List<FoodIngredientRelation>>
+
+    fun getAllProducts(db: AppDatabase, parentId: Int): Flow<List<FoodIngredientRelation>>
+
+    fun getProductFromFoodId(db: AppDatabase, foodId: Int): Flow<FoodIngredientRelation>
+
+    fun deleteFood(db: AppDatabase, food: FoodIngredientRelation)
+
+    fun getAllSubProducts(db: AppDatabase, parentId: Int): Flow<List<FoodIngredientRelation>?>
+
+    fun getAllIngredients(db: AppDatabase): Flow<List<Ingredient>>
+
+    fun getAllIngredients(db: AppDatabase, parentId: Int): Flow<List<Ingredient>?>
+
+    fun getAllIngredientsWithBasic(db: AppDatabase, parentId: Int): Flow<List<Ingredient>>
+
+    fun insertFoodData(db: AppDatabase, food: CompositeFood, isFavorite: Boolean = false)
+
+    fun insertBasicProducts(
+        db: AppDatabase,
+        repositoryFood: FoodRepository,
+        builder: FoodBuilderImpl
+    )
+}
+
+class FoodRepositoryImpl : FoodRepository {
+
+    override fun getAllProducts(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
         return db.foodDao().getAllParents()
     }
 
-    fun getAllProducts(db: AppDatabase, parentId: Int): Flow<List<FoodIngredientRelation>> {
+    override fun getAllProducts(
+        db: AppDatabase,
+        parentId: Int
+    ): Flow<List<FoodIngredientRelation>> {
         return db.foodDao().getAllParents(parentId)
     }
 
-    fun getProductFromFoodId(db: AppDatabase, foodId: Int): Flow<FoodIngredientRelation> {
+    override fun getProductFromFoodId(db: AppDatabase, foodId: Int): Flow<FoodIngredientRelation> {
         return db.foodDao().getFoodFromFoodId(foodId)
     }
 
-    fun deleteFood(db: AppDatabase, food: FoodIngredientRelation) {
+    override fun deleteFood(db: AppDatabase, food: FoodIngredientRelation) {
         CoroutineScope(Dispatchers.Default).launch {
 
             db.foodDao().deleteFood(food.food)
@@ -64,23 +94,29 @@ class FoodRepository {
         db.foodDao().deleteFoodRef(foodIngredientRef)
     }
 
-    fun getAllSubProducts(db: AppDatabase, parentId: Int): Flow<List<FoodIngredientRelation>?> {
+    override fun getAllSubProducts(
+        db: AppDatabase,
+        parentId: Int
+    ): Flow<List<FoodIngredientRelation>?> {
         return db.foodDao().getAllSubProducts(parentId)
     }
 
-    fun getAllIngredients(db: AppDatabase): Flow<List<Ingredient>> {
+    override fun getAllIngredients(db: AppDatabase): Flow<List<Ingredient>> {
         return db.foodDao().getAllIngredients()
     }
 
-    fun getAllIngredients(db: AppDatabase, parentId: Int): Flow<List<Ingredient>?> {
+    override fun getAllIngredients(db: AppDatabase, parentId: Int): Flow<List<Ingredient>?> {
         return db.foodDao().getAllIngredients(parentId)
     }
 
-    fun getAllIngredientsWithBasic(db: AppDatabase, parentId: Int): Flow<List<Ingredient>> {
+    override fun getAllIngredientsWithBasic(
+        db: AppDatabase,
+        parentId: Int
+    ): Flow<List<Ingredient>> {
         return db.foodDao().getAllIngredientsWithBasic(parentId)
     }
 
-    fun insertFoodData(db: AppDatabase, food: CompositeFood, isFavorite: Boolean = false) {
+    override fun insertFoodData(db: AppDatabase, food: CompositeFood, isFavorite: Boolean) {
         CoroutineScope(Dispatchers.Default).launch {
             delay(500)
             insertFood(food, db, null, isFavorite)
@@ -146,35 +182,39 @@ class FoodRepository {
         db.foodDao().insertReference(ref)
     }
 
-    fun insertBasicProducts(app: AppClass) {
+    override fun insertBasicProducts(
+        db: AppDatabase,
+        repositoryFood: FoodRepository,
+        builder: FoodBuilderImpl
+    ) {
         CoroutineScope(Dispatchers.Default).launch {
-            if (app.db.foodDao().getIngredientsCount() == 0) {
+            if (db.foodDao().getIngredientsCount() == 0) {
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeAluPatty())
+                repositoryFood.insertFoodData(db, builder.makeAluPatty())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeCheeseSlice())
+                repositoryFood.insertFoodData(db, builder.makeCheeseSlice())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeChickenPatty())
+                repositoryFood.insertFoodData(db, builder.makeChickenPatty())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeLettuce())
+                repositoryFood.insertFoodData(db, builder.makeLettuce())
             }
-            if (app.db.foodDao().getProductCount() == 0) {
+            if (db.foodDao().getProductCount() == 0) {
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeIceCream())
+                repositoryFood.insertFoodData(db, builder.makeIceCream())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeFries())
+                repositoryFood.insertFoodData(db, builder.makeFries())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeCoke())
+                repositoryFood.insertFoodData(db, builder.makeCoke())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeVegBurgerMeal())
+                repositoryFood.insertFoodData(db, builder.makeVegBurgerMeal())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeVegBurger())
+                repositoryFood.insertFoodData(db, builder.makeVegBurger())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeNonVegBurger())
+                repositoryFood.insertFoodData(db, builder.makeNonVegBurger())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeNonVegBurgerMeal())
+                repositoryFood.insertFoodData(db, builder.makeNonVegBurgerMeal())
                 delay(100)
-                app.repositoryFood.insertFoodData(app.db, app.builder.makeBurgerCombo())
+                repositoryFood.insertFoodData(db, builder.makeBurgerCombo())
             }
         }
     }

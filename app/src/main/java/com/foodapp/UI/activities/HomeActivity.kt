@@ -13,8 +13,10 @@ import com.foodapp.UI.common.setBottomNavbar
 import com.foodapp.UI.common.setTopNavbar
 import com.foodapp.UI.viewmodels.ProductViewModel
 import com.foodapp.databinding.ActivityHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding

@@ -13,9 +13,11 @@ import com.foodapp.UI.common.setBottomNavbar
 import com.foodapp.UI.common.setTopNavbar
 import com.foodapp.UI.viewmodels.CartViewModel
 import com.foodapp.databinding.ActivityCartBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class CartActivity : AppCompatActivity() {
     private var _binding: ActivityCartBinding? = null
     private val binding get() = _binding!!

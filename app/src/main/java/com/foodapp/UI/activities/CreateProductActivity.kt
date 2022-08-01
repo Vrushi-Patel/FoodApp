@@ -7,7 +7,9 @@ import com.foodapp.UI.common.setTopNavbar
 import com.foodapp.UI.fragments.AddIngredientFragment
 import com.foodapp.UI.fragments.AddProductFragment
 import com.foodapp.databinding.ActivityCreateProductBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CreateProductActivity : AppCompatActivity() {
 
     private var _biding: ActivityCreateProductBinding? = null

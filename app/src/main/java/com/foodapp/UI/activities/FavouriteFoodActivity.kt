@@ -13,8 +13,10 @@ import com.foodapp.UI.common.setBottomNavbar
 import com.foodapp.UI.common.setTopNavbar
 import com.foodapp.UI.viewmodels.FavouriteViewModel
 import com.foodapp.databinding.ActivityFavouriteFoodBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class FavouriteFoodActivity : AppCompatActivity() {
 
     private var _binding: ActivityFavouriteFoodBinding? = null
@@ -38,7 +40,7 @@ class FavouriteFoodActivity : AppCompatActivity() {
         }
 
         viewModel.viewModelScope.launch {
-            viewModel.favouriteProducts.collect {
+            viewModel.favouriteProducts.collect { it ->
                 (binding.favouriteList.adapter as FavouriteAdapter).setData(it)
                 binding.emptyListMsg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             }

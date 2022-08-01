@@ -64,22 +64,34 @@ class AddIngredientViewModel : ViewModel() {
         }
     }
 
+    fun getProducts() {
+        ingredientList = AddIngredientViewModel.app.repositoryFood.getAllIngredients(
+            AddIngredientViewModel.app.db
+        )
+    }
+
     fun makeProduct() {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
 
-        app.repositoryFavouriteFood.createFavouriteFood(app, foodComposite)
-
-        foodComposite = app.builder.factory.makeIngredient { }
-        foodLiveData.value = foodComposite
+        app.repositoryFavouriteFood.createFavouriteFood(app.repositoryFood, app.db, foodComposite)
+        reset()
     }
 
     fun updateProduct(food: FoodIngredientRelation) {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
 
-        app.repositoryFavouriteFood.updateFavouriteFood(app, foodComposite, food)
+        app.repositoryFavouriteFood.updateFavouriteFood(
+            app.repositoryFood,
+            app.db,
+            foodComposite,
+            food
+        )
+        reset()
+    }
 
+    private fun reset() {
         foodComposite = app.builder.factory.makeIngredient { }
         foodLiveData.value = foodComposite
     }
