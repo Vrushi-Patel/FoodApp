@@ -56,8 +56,8 @@ class ProductActivity : AppCompatActivity() {
             HomeViewModel.food = food!!
             homeViewModel.viewModelScope.launch {
                 homeViewModel.subProducts.collect { list ->
-                    list?.let { list ->
-                        setProductPage(activity, it, list)
+                    list?.let { list1 ->
+                        setProductPage(activity, it, list1)
                     }
                 }
             }
@@ -78,10 +78,10 @@ class ProductActivity : AppCompatActivity() {
         alertDialog.setMessage(R.string.add_to_cart_msg).setCancelable(true)
             .setNegativeButton(
                 R.string.no
-            ) { _, i -> noFuction() }
+            ) { _, _ -> noFuction() }
             .setPositiveButton(
                 R.string.yes
-            ) { _, i ->
+            ) { _, _ ->
                 yesFunction()
             }
         alertDialog.create()

@@ -14,7 +14,6 @@ class Operation(private val cartItems: MutableList<Food>) {
     fun operation(
         operation: OperationType,
         foodItem: Food,
-        product: Food?,
     ) {
         when (operation) {
             OperationType.AddToCart -> {
@@ -53,11 +52,11 @@ class PerformCommands(
     private val product: Food?,
 ) : Command {
     override fun execute() {
-        operations.operation(operation, foodItem, product)
+        operations.operation(operation, foodItem)
     }
 
     override fun unExecute() {
-        operations.operation(undo(operation), foodItem, product)
+        operations.operation(undo(operation), foodItem)
     }
 
     private fun undo(operation: OperationType): OperationType {

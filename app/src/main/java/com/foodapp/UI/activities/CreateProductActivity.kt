@@ -20,7 +20,7 @@ class CreateProductActivity : AppCompatActivity() {
         setTopNavbar(this)
 
         selectCombo()
-        binding.radioCreate.setOnCheckedChangeListener { radioGroup, i ->
+        binding.radioCreate.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.radioCombo -> {
                     selectCombo()

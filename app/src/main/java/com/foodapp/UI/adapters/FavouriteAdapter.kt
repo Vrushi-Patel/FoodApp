@@ -44,8 +44,8 @@ class FavouriteAdapter(val viewModel: FavouriteViewModel) :
             imageBtn.setOnClickListener {
                 val popUpMenu: PopupMenu = PopupMenu(context, it)
                 popUpMenu.menuInflater.inflate(R.menu.popup_menu, popUpMenu.menu)
-                popUpMenu.setOnMenuItemClickListener { it ->
-                    when (it.itemId) {
+                popUpMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
                         R.id.action_delete -> {
                             viewModel.delete(food)
                         }
