@@ -1,4 +1,4 @@
-package com.foodapp.UI.fragments
+package com.foodapp.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.AppClass
-import com.foodapp.UI.adapters.IngredientSelectorAdapter
-import com.foodapp.UI.viewmodels.AddProductViewModel
 import com.foodapp.databinding.FragmentAddProductBinding
 import com.foodapp.room.relations.FoodIngredientRelation
+import com.foodapp.ui.adapters.IngredientSelectorAdapter
+import com.foodapp.ui.viewmodels.AddProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

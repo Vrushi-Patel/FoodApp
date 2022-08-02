@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.activities.CreateProductActivity">
+    tools:context=".ui.activities.CreateProductActivity">
 
     <include
         android:id="@+id/toolbar"

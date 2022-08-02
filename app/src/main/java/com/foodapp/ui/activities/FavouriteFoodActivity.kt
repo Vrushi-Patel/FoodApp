@@ -1,4 +1,4 @@
-package com.foodapp.UI.activities
+package com.foodapp.ui.activities
 
 import android.os.Bundle
 import android.view.View
@@ -8,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.AppClass
-import com.foodapp.UI.adapters.FavouriteAdapter
-import com.foodapp.UI.common.setBottomNavbar
-import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.viewmodels.FavouriteViewModel
+import com.foodapp.ui.adapters.FavouriteAdapter
+import com.foodapp.ui.common.setBottomNavbar
+import com.foodapp.ui.common.setTopNavbar
+import com.foodapp.ui.viewmodels.FavouriteViewModel
 import com.foodapp.databinding.ActivityFavouriteFoodBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,8 +30,6 @@ class FavouriteFoodActivity : AppCompatActivity() {
         setContentView(binding.root)
         setTopNavbar(this)
         setBottomNavbar(this)
-
-        FavouriteViewModel.app = application as AppClass
 
         binding.favouriteList.apply {
             layoutManager = LinearLayoutManager(baseContext)

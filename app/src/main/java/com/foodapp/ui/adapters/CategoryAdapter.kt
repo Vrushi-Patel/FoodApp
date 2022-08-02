@@ -1,38 +1,35 @@
-package com.foodapp.UI.adapters
+package com.foodapp.ui.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.ProductActivity
-import com.foodapp.room.entities.Ingredient
+import com.foodapp.ui.activities.ProductActivity
+import com.foodapp.room.relations.FoodIngredientRelation
 import com.squareup.picasso.Picasso
 
-class MoreAdapter :
-    RecyclerView.Adapter<MoreAdapter.FoodViewHolder>() {
-    var items: List<Ingredient> = listOf()
-    fun setData(data: List<Ingredient>) {
+class CategoryAdapter :
+    RecyclerView.Adapter<CategoryAdapter.FoodViewHolder>() {
+    var items: List<FoodIngredientRelation> = listOf()
+    fun setData(data: List<FoodIngredientRelation>) {
         items = data
         notifyDataSetChanged()
     }
 
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
-        val name: TextView = itemView.findViewById(R.id.name)
         val imageView: ImageView = itemView.findViewById(R.id.productImage)
         val card: CardView = itemView.findViewById(R.id.item)
-        fun bind(food: Ingredient) {
-            Picasso.with(context).load(food.product.url).into(imageView)
-            name.text = food.product.name
+        fun bind(food: FoodIngredientRelation) {
+            Picasso.with(context).load(food.food.product.url).into(imageView)
             card.setOnClickListener {
                 val productActivity = ProductActivity()
-                ProductActivity.ingredient = food
-                ProductActivity.food = null
+                ProductActivity.food = food
+                ProductActivity.ingredient = null
                 val intent = Intent(context, productActivity::class.java)
                 context.startActivity(intent)
             }
@@ -42,7 +39,7 @@ class MoreAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.more_item, parent, false)
+        val view = inflater.inflate(R.layout.category_item, parent, false)
         return FoodViewHolder(view)
     }
 

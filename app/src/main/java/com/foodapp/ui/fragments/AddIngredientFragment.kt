@@ -1,4 +1,4 @@
-package com.foodapp.UI.fragments
+package com.foodapp.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.foodapp.AppClass
-import com.foodapp.UI.adapters.IngredientSelectorAdapter
-import com.foodapp.UI.viewmodels.AddIngredientViewModel
 import com.foodapp.databinding.FragmentAddIngredientBinding
 import com.foodapp.room.relations.FoodIngredientRelation
+import com.foodapp.ui.adapters.IngredientSelectorAdapter
+import com.foodapp.ui.viewmodels.AddIngredientViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -73,7 +72,6 @@ class AddIngredientFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        AddIngredientViewModel.app = requireActivity().application as AppClass
         viewModel = ViewModelProvider(this).get(AddIngredientViewModel::class.java)
 
         if (food != null && viewModel.ingredientList == null) {

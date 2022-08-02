@@ -1,4 +1,4 @@
-package com.foodapp.UI.activities
+package com.foodapp.ui.activities
 
 import android.os.Bundle
 import android.view.View
@@ -7,12 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.foodapp.AppClass
-import com.foodapp.UI.adapters.CartAdapter
-import com.foodapp.UI.common.setBottomNavbar
-import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.viewmodels.CartViewModel
 import com.foodapp.databinding.ActivityCartBinding
+import com.foodapp.ui.adapters.CartAdapter
+import com.foodapp.ui.common.setBottomNavbar
+import com.foodapp.ui.common.setTopNavbar
+import com.foodapp.ui.viewmodels.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,7 +30,6 @@ class CartActivity : AppCompatActivity() {
         setTopNavbar(this)
         setBottomNavbar(this)
 
-        CartViewModel.app = application as AppClass
         cartViewModel.viewModelScope.launch {
             binding.cartItems.apply {
                 layoutManager = LinearLayoutManager(baseContext)

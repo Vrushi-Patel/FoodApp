@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import com.foodapp.models.Food as CompositeFood
 
 interface FoodRepository {
@@ -42,7 +43,7 @@ interface FoodRepository {
     )
 }
 
-class FoodRepositoryImpl : FoodRepository {
+class FoodRepositoryImpl @Inject constructor() : FoodRepository {
 
     override fun getAllProducts(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
         return db.foodDao().getAllParents()

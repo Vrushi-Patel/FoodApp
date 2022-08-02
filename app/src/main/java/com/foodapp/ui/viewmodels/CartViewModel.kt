@@ -1,34 +1,39 @@
-package com.foodapp.UI.viewmodels
+package com.foodapp.ui.viewmodels
 
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foodapp.AppClass
-import com.foodapp.UI.activities.ProductActivity
+import com.foodapp.repositories.CartRepositoryImpl
+import com.foodapp.repositories.FoodRepositoryImpl
+import com.foodapp.room.database.AppDatabase
 import com.foodapp.room.relations.CartFoodRelation
+import com.foodapp.ui.activities.ProductActivity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CartViewModel : ViewModel() {
+@HiltViewModel
+class CartViewModel @Inject constructor(
+    private val repositoryCart: CartRepositoryImpl,
+    val db: AppDatabase,
+    val repositoryFood: FoodRepositoryImpl,
+) : ViewModel() {
 
-    var cartItems: Flow<List<CartFoodRelation>> = app.repositoryCart.getCartList(app.db)
-
-    companion object {
-        lateinit var app: AppClass
-    }
+    var cartItems: Flow<List<CartFoodRelation>> = repositoryCart.getCartList(db)
 
     fun addToCart(food: CartFoodRelation) {
-        app.repositoryCart.addToCart(app.db, food.food)
+        repositoryCart.addToCart(db, food.food)
     }
 
     fun removeFromCart(food: CartFoodRelation) {
-        app.repositoryCart.removeFromCart(app.db, food.food.foodId!!)
+        repositoryCart.removeFromCart(db, food.food.foodId!!)
     }
 
     fun openItemPage(food: CartFoodRelation, context: Context) {
         this.viewModelScope.launch {
-            app.repositoryFood.getProductFromFoodId(app.db, foodId = food.food.foodId!!)
+            repositoryFood.getProductFromFoodId(db, foodId = food.food.foodId!!)
                 .collect {
                     val productActivity = ProductActivity()
                     ProductActivity.food = it

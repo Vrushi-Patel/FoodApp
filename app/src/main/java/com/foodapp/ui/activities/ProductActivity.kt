@@ -1,4 +1,4 @@
-package com.foodapp.UI.activities
+package com.foodapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,16 +6,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
-import com.foodapp.AppClass
 import com.foodapp.R
-import com.foodapp.UI.common.setBottomNavbar
-import com.foodapp.UI.common.setIngredientPage
-import com.foodapp.UI.common.setProductPage
-import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.viewmodels.HomeViewModel
 import com.foodapp.databinding.ActivityProductBinding
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
+import com.foodapp.ui.common.setBottomNavbar
+import com.foodapp.ui.common.setIngredientPage
+import com.foodapp.ui.common.setProductPage
+import com.foodapp.ui.common.setTopNavbar
+import com.foodapp.ui.viewmodels.HomeViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -38,7 +37,7 @@ class ProductActivity : AppCompatActivity() {
         setContentView(binding.root)
         setTopNavbar(this)
         setBottomNavbar(this)
-        HomeViewModel.app = application as AppClass
+
         binding.productPage.orderButton.setOnClickListener {
             showAlertDialog({
                 homeViewModel.addToCart(food)
@@ -54,7 +53,6 @@ class ProductActivity : AppCompatActivity() {
                 .placeholder(R.drawable.burger)
                 .into(binding.collapsableMenu.image)
             val activity = this
-            HomeViewModel.app = application as AppClass
             HomeViewModel.food = food!!
             homeViewModel.viewModelScope.launch {
                 homeViewModel.subProducts.collect { list ->

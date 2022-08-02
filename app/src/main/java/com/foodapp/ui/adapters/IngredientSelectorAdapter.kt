@@ -1,4 +1,4 @@
-package com.foodapp.UI.adapters
+package com.foodapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.viewmodels.AddIngredientViewModel
-import com.foodapp.UI.viewmodels.AddProductViewModel
+import com.foodapp.ui.viewmodels.AddIngredientViewModel
+import com.foodapp.ui.viewmodels.AddProductViewModel
 import com.foodapp.room.relations.FoodIngredientRelation
 import com.squareup.picasso.Picasso
 import com.foodapp.room.entities.Ingredient as ingredientsRoom

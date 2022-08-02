@@ -1,23 +1,36 @@
-package com.foodapp.UI.viewmodels
+package com.foodapp.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.foodapp.AppClass
+import com.foodapp.builder.FoodBuilderImpl
 import com.foodapp.models.Food
 import com.foodapp.models.Ingredient
+import com.foodapp.repositories.FavouriteFoodRepositoryImpl
+import com.foodapp.repositories.FoodRepositoryImpl
+import com.foodapp.room.database.AppDatabase
 import com.foodapp.room.relations.FoodIngredientRelation
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddProductViewModel : ViewModel() {
+@HiltViewModel
+class AddProductViewModel @Inject constructor(
+    val builder: FoodBuilderImpl,
+    val db: AppDatabase,
+    val repositoryFood: FoodRepositoryImpl,
+    private val repositoryFavouriteFood: FavouriteFoodRepositoryImpl
+) : ViewModel() {
 
     var productList: Flow<List<FoodIngredientRelation>>? = null
 
-    var foodComposite: Food = app.builder.factory.makeIngredient { }
+    var foodComposite: Food = builder.factory.makeIngredient { }
     var selectedItems: MutableList<Int> = mutableListOf()
 
     val selectedItemLiveData: MutableLiveData<MutableList<Int>> by lazy {
@@ -39,7 +52,7 @@ class AddProductViewModel : ViewModel() {
     fun addProduct(food: FoodIngredientRelation) {
         CoroutineScope(Dispatchers.Default).launch {
 
-            val foodData = app.builder.factory.convertFood(food)
+            val foodData = builder.factory.convertFood(food)
             addAllSubProducts(foodData, food)
             foodData.returnPrice()
             foodData.returnCalories()
@@ -55,7 +68,7 @@ class AddProductViewModel : ViewModel() {
     fun removeProduct(food: FoodIngredientRelation) {
         CoroutineScope(Dispatchers.Default).launch {
 
-            val foodData = app.builder.factory.convertFood(food)
+            val foodData = builder.factory.convertFood(food)
             addAllSubProducts(foodData, food)
             foodData.returnCalories()
             foodData.returnPrice()
@@ -86,12 +99,12 @@ class AddProductViewModel : ViewModel() {
         CoroutineScope(Dispatchers.Default).launch {
 
             val productsList: List<FoodIngredientRelation>? =
-                app.repositoryFood.getAllSubProducts(app.db, food.food.foodId!!)
+                repositoryFood.getAllSubProducts(db, food.food.foodId!!)
                     .collect() as List<FoodIngredientRelation>?
 
             productsList?.let {
                 productsList.forEach {
-                    val foodSubData = app.builder.factory.convertFood(it)
+                    val foodSubData = builder.factory.convertFood(it)
                     addAllSubProducts(foodSubData, it)
                     foodData.add(foodSubData)
 
@@ -102,41 +115,40 @@ class AddProductViewModel : ViewModel() {
         }
     }
 
-    fun getProducts(){
+    fun getProducts() {
         productList =
-            app.repositoryFood.getAllProducts(AddProductViewModel.app.db)
+            repositoryFood.getAllProducts(db)
     }
 
     fun makeProduct() {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
 
-        app.repositoryFavouriteFood.createFavouriteFood(app.repositoryFood, app.db, foodComposite)
+        repositoryFavouriteFood.createFavouriteFood(repositoryFood, db, foodComposite)
         reset()
     }
 
     fun updateProduct(food: FoodIngredientRelation) {
         foodComposite.url =
             "https://th.bing.com/th/id/R.4fbde595384ea1c9833df3c9468588be?rik=LU6gYxH7raAxIQ&riu=http%3a%2f%2fclipart-library.com%2fimg%2f1472879.png&ehk=5KNiNQZJeP9P6ldx9r2lleyi5Cixe72gJSafH%2fphAyU%3d&risl=&pid=ImgRaw&r=0"
-
-        app.repositoryFavouriteFood.updateFavouriteFood(
-            app.repositoryFood,
-            app.db, foodComposite, food
+        repositoryFavouriteFood.updateFavouriteFood(
+            repositoryFood,
+            db, foodComposite, food
         )
         reset()
     }
 
     private fun reset() {
-        foodComposite = AddIngredientViewModel.app.builder.factory.makeIngredient { }
+        foodComposite = builder.factory.makeIngredient { }
         foodLiveData.value = foodComposite
     }
 
     suspend fun setFoodData(food: FoodIngredientRelation) {
-        productList = app.repositoryFood.getAllProducts(app.db, food.food.foodId!!)
-        app.repositoryFood.getAllSubProducts(app.db, food.food.foodId!!).collect {
+        productList = repositoryFood.getAllProducts(db, food.food.foodId!!)
+        repositoryFood.getAllSubProducts(db, food.food.foodId!!).collect {
             it?.let { i ->
 
-                foodComposite = app.builder.factory.convertFood(food)
+                foodComposite = builder.factory.convertFood(food)
                 foodComposite.returnPrice()
                 foodComposite.returnCalories()
 

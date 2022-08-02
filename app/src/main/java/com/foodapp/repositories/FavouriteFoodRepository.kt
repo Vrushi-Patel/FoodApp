@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface FavouriteFoodRepository {
 
@@ -28,7 +29,7 @@ interface FavouriteFoodRepository {
     )
 }
 
-class FavouriteFoodRepositoryImpl : FavouriteFoodRepository {
+class FavouriteFoodRepositoryImpl @Inject constructor() : FavouriteFoodRepository {
 
     override fun getFavouriteFood(db: AppDatabase): Flow<List<FoodIngredientRelation>> {
         return db.favouriteDao().getAllFavourites()

@@ -1,11 +1,11 @@
-package com.foodapp.UI.activities
+package com.foodapp.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.foodapp.R
-import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.fragments.AddIngredientFragment
-import com.foodapp.UI.fragments.AddProductFragment
+import com.foodapp.ui.common.setTopNavbar
+import com.foodapp.ui.fragments.AddIngredientFragment
+import com.foodapp.ui.fragments.AddProductFragment
 import com.foodapp.databinding.ActivityCreateProductBinding
 import dagger.hilt.android.AndroidEntryPoint
 

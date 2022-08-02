@@ -1,4 +1,4 @@
-package com.foodapp.UI.adapters
+package com.foodapp.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.viewmodels.CartViewModel
 import com.foodapp.room.relations.CartFoodRelation
+import com.foodapp.ui.viewmodels.CartViewModel
 import com.squareup.picasso.Picasso
 
 class CartAdapter(val viewModel: CartViewModel) :

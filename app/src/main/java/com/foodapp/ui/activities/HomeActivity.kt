@@ -1,4 +1,4 @@
-package com.foodapp.UI.activities
+package com.foodapp.ui.activities
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.foodapp.AppClass
-import com.foodapp.UI.adapters.CategoryAdapter
-import com.foodapp.UI.adapters.MoreAdapter
-import com.foodapp.UI.common.setBottomNavbar
-import com.foodapp.UI.common.setTopNavbar
-import com.foodapp.UI.viewmodels.ProductViewModel
 import com.foodapp.databinding.ActivityHomeBinding
+import com.foodapp.ui.adapters.CategoryAdapter
+import com.foodapp.ui.adapters.MoreAdapter
+import com.foodapp.ui.common.setBottomNavbar
+import com.foodapp.ui.common.setTopNavbar
+import com.foodapp.ui.viewmodels.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,7 +29,6 @@ class HomeActivity : AppCompatActivity() {
         setBottomNavbar(this)
         setTopNavbar(this)
 
-        ProductViewModel.app = application as AppClass
         binding.categoryList.apply {
             layoutManager = LinearLayoutManager(baseContext)
             (layoutManager as LinearLayoutManager).orientation = RecyclerView.HORIZONTAL
@@ -54,7 +52,5 @@ class HomeActivity : AppCompatActivity() {
                 (binding.moreList.adapter as MoreAdapter).setData(it)
             }
         }
-
-
     }
 }

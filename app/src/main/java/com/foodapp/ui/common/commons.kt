@@ -1,4 +1,4 @@
-package com.foodapp.UI.common
+package com.foodapp.ui.common
 
 import android.app.Activity
 import android.content.Intent
@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.UI.activities.*
-import com.foodapp.UI.adapters.ProductIngredientAdapter
-import com.foodapp.UI.adapters.ProductSubProductAdapter
+import com.foodapp.ui.activities.*
+import com.foodapp.ui.adapters.ProductIngredientAdapter
+import com.foodapp.ui.adapters.ProductSubProductAdapter
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
 

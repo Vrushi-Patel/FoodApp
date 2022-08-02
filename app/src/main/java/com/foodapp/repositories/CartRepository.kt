@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface CartRepository {
 
@@ -18,7 +19,7 @@ interface CartRepository {
     fun removeFromCart(db: AppDatabase, foodId: Int)
 }
 
-class CartRepositoryImpl : CartRepository {
+class CartRepositoryImpl @Inject constructor() : CartRepository {
 
     override fun getCartList(db: AppDatabase): Flow<List<CartFoodRelation>> {
         return db.cartDao().getAll()
