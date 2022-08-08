@@ -15,6 +15,7 @@ import com.foodapp.ui.adapters.ProductIngredientAdapter
 import com.foodapp.ui.adapters.ProductSubProductAdapter
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
+import com.foodapp.ui.viewmodels.HomeViewModel
 
 fun setBottomNavbar(activity: Activity) {
     val homeIcon = activity.findViewById<ImageButton>(R.id.home)
@@ -65,7 +66,8 @@ fun setBottomNavbar(activity: Activity) {
 fun setProductPage(
     activity: ProductActivity,
     food: FoodIngredientRelation,
-    subProducts: List<FoodIngredientRelation>
+    subProducts: List<FoodIngredientRelation>,
+    viewModel: HomeViewModel
 ) {
     val ingredientPage = activity.findViewById<View>(R.id.ingredientPage)
     val productPage = activity.findViewById<View>(R.id.productPage)
@@ -75,14 +77,14 @@ fun setProductPage(
     ingredientsList.apply {
         layoutManager = LinearLayoutManager(activity)
         (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
-        adapter = ProductIngredientAdapter(food.ingredients!!)
+        adapter = ProductIngredientAdapter(food.ingredients!!,viewModel)
     }
     val productsList = activity.findViewById<RecyclerView>(R.id.productsList)
     productsList.apply {
         layoutManager = LinearLayoutManager(activity)
         (layoutManager as LinearLayoutManager).orientation = RecyclerView.VERTICAL
         adapter =
-            ProductSubProductAdapter(subProducts)
+            ProductSubProductAdapter(subProducts,viewModel)
     }
 }
 

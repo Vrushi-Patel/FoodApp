@@ -1,6 +1,5 @@
 package com.foodapp.ui.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +8,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.R
-import com.foodapp.ui.activities.ProductActivity
 import com.foodapp.room.entities.Ingredient
 import com.foodapp.room.relations.FoodIngredientRelation
+import com.foodapp.ui.activities.ProductActivity
+import com.foodapp.ui.viewmodels.HomeViewModel
 import com.squareup.picasso.Picasso
 
-class ProductIngredientAdapter(val items: List<Ingredient>) :
+class ProductIngredientAdapter(val items: List<Ingredient>, val viewModel: HomeViewModel) :
     RecyclerView.Adapter<ProductIngredientAdapter.FoodViewHolder>() {
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
@@ -23,17 +23,18 @@ class ProductIngredientAdapter(val items: List<Ingredient>) :
         val name: TextView = itemView.findViewById(R.id.name)
         val price: TextView = itemView.findViewById(R.id.price)
         val data: TextView = itemView.findViewById(R.id.data)
-        fun bind(food: Ingredient) {
+        fun bind(food: Ingredient, viewModel: HomeViewModel) {
             price.text = "₹ " + food.product.price.toString()
             name.text = food.product.name
             data.text = food.toString()
             Picasso.with(context).load(food.product.url).into(imageView)
             card.setOnClickListener {
-                val productActivity = ProductActivity()
+//                val productActivity = ProductActivity()
                 ProductActivity.ingredient = food
                 ProductActivity.food = null
-                val intent = Intent(context, productActivity::class.java)
-                context.startActivity(intent)
+                viewModel.setData(false, null)
+//                val intent = Intent(context, productActivity::class.java)
+//                context.startActivity(intent)
             }
         }
     }
@@ -46,7 +47,7 @@ class ProductIngredientAdapter(val items: List<Ingredient>) :
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], viewModel)
     }
 
     override fun getItemCount(): Int {
@@ -54,7 +55,10 @@ class ProductIngredientAdapter(val items: List<Ingredient>) :
     }
 }
 
-class ProductSubProductAdapter(val items: List<FoodIngredientRelation>) :
+class ProductSubProductAdapter(
+    val items: List<FoodIngredientRelation>,
+    val viewModel: HomeViewModel
+) :
     RecyclerView.Adapter<ProductSubProductAdapter.FoodViewHolder>() {
     class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
@@ -63,17 +67,18 @@ class ProductSubProductAdapter(val items: List<FoodIngredientRelation>) :
         val name: TextView = itemView.findViewById(R.id.name)
         val price: TextView = itemView.findViewById(R.id.price)
         val data: TextView = itemView.findViewById(R.id.data)
-        fun bind(food: FoodIngredientRelation) {
+        fun bind(food: FoodIngredientRelation, viewModel: HomeViewModel) {
             price.text = "₹ " + food.food.product.price.toString()
             name.text = food.food.product.name
             data.text = food.toString()
             Picasso.with(context).load(food.food.product.url).into(imageView)
             card.setOnClickListener {
-                val productActivity = ProductActivity()
+//                val productActivity = ProductActivity()
                 ProductActivity.ingredient = null
                 ProductActivity.food = food
-                val intent = Intent(context, productActivity::class.java)
-                context.startActivity(intent)
+                viewModel.setData(true, food)
+//                val intent = Intent(context, productActivity::class.java)
+//                context.startActivity(intent)
             }
         }
     }
@@ -86,7 +91,7 @@ class ProductSubProductAdapter(val items: List<FoodIngredientRelation>) :
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], viewModel)
     }
 
     override fun getItemCount(): Int {

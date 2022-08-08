@@ -24,7 +24,7 @@ class ProductActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductBinding
 
-    val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
 
     companion object {
         var ingredient: Ingredient? = null
@@ -48,29 +48,41 @@ class ProductActivity : AppCompatActivity() {
         }
 
         food?.let {
-            Picasso.with(baseContext)
-                .load(it.food.product.url)
-                .placeholder(R.drawable.burger)
-                .into(binding.collapsableMenu.image)
-            val activity = this
             HomeViewModel.food = food!!
-            homeViewModel.viewModelScope.launch {
-                homeViewModel.subProducts.collect { list ->
-                    list?.let { list1 ->
-                        setProductPage(activity, it, list1)
-                    }
-                }
-            }
+            homeViewModel.setData(true, it)
         }
 
         ingredient?.let {
-            Picasso.with(baseContext)
-                .load(it.product.url)
-                .placeholder(R.drawable.burger)
-                .into(binding.collapsableMenu.image)
-            setIngredientPage(this, it)
+            homeViewModel.setData(false, null)
         }
 
+        homeViewModel.isFoodObserver.observe({ this.lifecycle }, {
+            if (it) {
+                food?.let {
+                    Picasso.with(baseContext)
+                        .load(it.food.product.url)
+                        .placeholder(R.drawable.burger)
+                        .into(binding.collapsableMenu.image)
+                    val activity = this
+                    HomeViewModel.food = food!!
+                    homeViewModel.viewModelScope.launch {
+                        homeViewModel.subProducts.collect { list ->
+                            list?.let { list1 ->
+                                setProductPage(activity, it, list1, homeViewModel)
+                            }
+                        }
+                    }
+                }
+            } else {
+                ingredient?.let {
+                    Picasso.with(baseContext)
+                        .load(it.product.url)
+                        .placeholder(R.drawable.burger)
+                        .into(binding.collapsableMenu.image)
+                    setIngredientPage(this, it)
+                }
+            }
+        })
     }
 
     private fun showAlertDialog(yesFunction: () -> Unit, noFuction: () -> Unit) {

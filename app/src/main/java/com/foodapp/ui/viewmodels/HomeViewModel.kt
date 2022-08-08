@@ -1,7 +1,7 @@
 package com.foodapp.ui.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.foodapp.AppClass
 import com.foodapp.repositories.CartRepositoryImpl
 import com.foodapp.repositories.FoodRepositoryImpl
 import com.foodapp.room.database.AppDatabase
@@ -17,14 +17,28 @@ class HomeViewModel @Inject constructor(
     val db: AppDatabase,
 ) : ViewModel() {
 
+    var isFood = true
+    val isFoodObserver: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    fun setData(isFood: Boolean, food: FoodIngredientRelation?) {
+        this.isFood = isFood
+        isFoodObserver.value = isFood
+        food?.let {
+            HomeViewModel.food = it
+            subProducts = repositoryFood.getAllSubProducts(
+                db,
+                Companion.food.food.foodId!!
+            )
+        }
+    }
+
     fun addToCart(food: FoodIngredientRelation?) {
         repositoryCart.addToCart(db, food!!.food)
     }
 
-    var subProducts: Flow<List<FoodIngredientRelation>?> = repositoryFood.getAllSubProducts(
-        db,
-        food.food.foodId!!
-    )
+    lateinit var subProducts: Flow<List<FoodIngredientRelation>?>
 
     companion object {
         lateinit var food: FoodIngredientRelation
