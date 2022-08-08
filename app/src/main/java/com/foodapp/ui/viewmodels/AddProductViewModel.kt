@@ -3,6 +3,7 @@ package com.foodapp.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.foodapp.AppClass
 import com.foodapp.builder.FoodBuilderImpl
 import com.foodapp.models.Food
@@ -50,8 +51,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     fun addProduct(food: FoodIngredientRelation) {
-        CoroutineScope(Dispatchers.Default).launch {
-
+        viewModelScope.launch {
             val foodData = builder.factory.convertFood(food)
             addAllSubProducts(foodData, food)
             foodData.returnPrice()

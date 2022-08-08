@@ -19,9 +19,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
-        return AppDatabase.getDatabase(context)
-    }
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
+        AppDatabase.getDatabase(context)
 }
 
 @Module
@@ -29,7 +28,5 @@ class AppModule {
 class ActivityModule {
 
     @Provides
-    fun provideFoodFactory(): FoodBuilderImpl {
-        return FoodBuilderImpl(FoodFactoryImpl())
-    }
+    fun provideFoodFactory(): FoodBuilderImpl = FoodBuilderImpl(FoodFactoryImpl())
 }
